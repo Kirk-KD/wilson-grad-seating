@@ -1,0 +1,12 @@
+{
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always"
+    },
+    "files.exclude": {
+      "node_modules": true,
+      ".env.local": true
+    },
+    "editor.tabSize": 2
+  }
+  
