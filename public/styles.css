@@ -7,12 +7,8 @@
       "Courier New", monospace;
     --color-orange-100: #fcdfd4;
     --color-blue-100: #bde1ff;
-    --color-white: #fff;
-    --default-transition-duration: 150ms;
-    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
-    --color-white-500: #ffffff;
     --color-white-950: #e8e8e8;
   }
 }
@@ -162,25 +158,11 @@
   }
 }
 @layer utilities {
-  .absolute {
-    position: absolute;
-  }
   .relative {
     position: relative;
   }
   .flex {
     display: flex;
-  }
-  .bg-white-500 {
-    background-color: var(--color-white-500);
-  }
-  .bg-white-950 {
-    background-color: var(--color-white-950);
-  }
-  .transition {
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, visibility, content-visibility, overlay, pointer-events;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
 }
 .login-card {

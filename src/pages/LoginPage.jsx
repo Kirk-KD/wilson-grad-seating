@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import Card from "../components/login/Card";
+import LoginCard from "../components/login/LoginCard";
 
 export default function LoginPage() {
   return (
@@ -9,10 +9,12 @@ export default function LoginPage() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        backgroundImage: "url(/images/login-background.svg)",
+        backgroundPosition: "center",
+        backgroundSize: "cover"
       }}
-      className="bg-white-950"
     >
-      <Card></Card>
+      <LoginCard/>
     </Box>
   );
 }
