@@ -9,7 +9,6 @@
     --color-blue-100: #bde1ff;
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
-    --color-white-950: #e8e8e8;
   }
 }
 @layer base {

@@ -1,0 +1,51 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuth() && request.auth.token.admin == true;
+    }
+
+    match /admin_users/{uid} {
+      allow read, create: if isAdmin();
+      allow delete: if isAdmin() && request.auth.uid == uid;
+      allow update: if false;
+    }
+
+    match /student_info/{uid} {
+      allow read: if isAuth();
+      allow write: if isAdmin();
+    }
+
+    match /student_users/{uid} {
+      allow read, write: if isAdmin();
+    }
+
+    match /student_choices/{uid} {
+      allow read: if isAuth();
+      allow update: if isAdmin() || (isAuth() && request.auth.uid == uid);
+      allow create, delete: if isAdmin();
+    }
+
+    match /tables/{tableId} {
+      allow read: if isAuth();
+      allow create, delete: if false;
+
+      match /seats/{seatNumber} {
+        allow read: if isAuth();
+        allow create, delete: if false;
+        allow update: if isAdmin() || (
+          isAuth() 
+          && (
+            resource.data.uid == null || 
+            resource.data.uid == request.auth.uid
+          )
+        );
+      }
+    }
+  }
+}
