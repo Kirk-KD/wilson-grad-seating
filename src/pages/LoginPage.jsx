@@ -12,7 +12,6 @@ export default function LoginPage() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log(isAdmin);
       if (isAdmin != null && user && checked) navigate(isAdmin ? "/admin" : "/student");
     });
 

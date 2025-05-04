@@ -3,9 +3,9 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../../utils/firebase/firebase';
+import { auth } from '../../../utils/firebase/firebase';
 
-export default function AccountButton({ onLogout }) {
+export default function AccountButton() {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleOpenProfileMenu = (event) => {

@@ -18,7 +18,7 @@ async function seedTables() {
     emptySeatMap[seat] = null;
   }
 
-  for (let i = 1; i <= 55; i++) {
+  for (let i = 1; i <= 54; i++) {
     const tableRef = db.collection("tables").doc(i.toString());
     batch.set(tableRef, {});
 
@@ -29,7 +29,7 @@ async function seedTables() {
   }
 
   await batch.commit();
-  console.log("Seeded tables 1-55.")
+  console.log("Seeded tables 1-54.")
 }
 
 async function createAdmin() {
@@ -40,12 +40,12 @@ async function createAdmin() {
   .then(userRecord => {
     const batch = db.batch();
     const adminUserRef = db.collection("admin_users").doc(userRecord.uid);
-    batch.set(adminUserRef, { email: process.env.DEFAULT_ADMIN_EMAIL });
+    batch.set(adminUserRef, { email: process.env.REACT_APP_DEFAULT_ADMIN_EMAIL });
     batch.commit();
 
     admin.auth().setCustomUserClaims(userRecord.uid, { admin: true });
 
-    console.log("Created admin account: ", process.env.DEFAULT_ADMIN_EMAIL);
+    console.log("Created admin account: ", process.env.REACT_APP_DEFAULT_ADMIN_EMAIL);
   });
 }
 

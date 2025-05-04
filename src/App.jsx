@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import DashboardLayout from "./components/teacher/DashboardLayout";
+import DashboardLayout from "./components/teacher/layout/DashboardLayout";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 import StudentDashboard from "./pages/student/StudentDashboard";
