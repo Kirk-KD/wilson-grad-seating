@@ -14,12 +14,12 @@ export default function StudentLogin() {
       const userCredential = await signInWithEmailAndPassword(auth, email, oen);
       const user = userCredential.user;
       const token = await user.getIdTokenResult();
-
+      
       if (token.claims.admin) {
         await signOut(auth);
         setErrorCode("is-teacher");
       } else {
-        navigate("/admin");
+        navigate("/student");
       }
     } catch (err) {
       setErrorCode(err.code);
