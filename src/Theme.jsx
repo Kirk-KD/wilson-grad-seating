@@ -15,7 +15,16 @@ const theme = createTheme({
   typography: {
     ...baseTheme.typography,
     fontFamily: "Roboto, Helvetica, Arial, sans-serif"
-  }
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: 'rgb(250, 250, 250)',
+        },
+      },
+    },
+  },
 });
 
 export default theme;

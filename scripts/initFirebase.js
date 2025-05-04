@@ -34,8 +34,8 @@ async function seedTables() {
 
 async function createAdmin() {
   admin.auth().createUser({
-    email: process.env.DEFAULT_ADMIN_EMAIL,
-    password: process.env.DEFAULT_ADMIN_PASSWORD
+    email: process.env.REACT_APP_DEFAULT_ADMIN_EMAIL,
+    password: process.env.REACT_APP_DEFAULT_ADMIN_PASSWORD
   })
   .then(userRecord => {
     const batch = db.batch();

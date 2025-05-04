@@ -1,9 +1,16 @@
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import DashboardLayout from "./components/teacher/DashboardLayout";
 import LoginPage from "./pages/LoginPage";
-import StudentDashboard from "./pages/StudentDashboard";
-import TeacherDashboard from "./pages/TeacherDashboard";
+import NotFound from "./pages/NotFound";
+import StudentDashboard from "./pages/student/StudentDashboard";
+import Audit from "./pages/teacher/Audit";
+import Overview from "./pages/teacher/Overview";
+import Seating from "./pages/teacher/Seating";
+import Settings from "./pages/teacher/Settings";
+import Students from "./pages/teacher/Students";
+import Teachers from "./pages/teacher/Teachers";
 import theme from "./Theme";
 
 export default function App() {
@@ -14,7 +21,15 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/student" element={<StudentDashboard />} />
-          <Route path="/admin" element={<TeacherDashboard />} />
+          <Route path="/admin" element={<DashboardLayout />}>
+            <Route index element={<Overview />} />
+            <Route path="seating" element={<Seating />} />
+            <Route path="students" element={<Students />} />
+            <Route path="teachers" element={<Teachers />} />
+            <Route path="audit" element={<Audit />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

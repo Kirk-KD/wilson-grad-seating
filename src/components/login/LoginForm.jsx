@@ -1,6 +1,6 @@
-// src/components/LoginForm.jsx
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import LoginErrorAlert from "./LoginErrorAlert";
 import StyledFormBox from "./StyledFormBox";
 import WilsonLogo from "./WilsonLogo";
 
@@ -8,6 +8,7 @@ export default function LoginForm({
   title,
   passwordFieldLabel,
   onSubmit,
+  errorCode
 }) {
   const [email, setEmail] = useState("");
   const [credential, setCredential] = useState("");
@@ -47,6 +48,8 @@ export default function LoginForm({
         <Button type="submit" variant="contained" fullWidth>
           Login
         </Button>
+
+        {errorCode != null && <LoginErrorAlert errorCode={errorCode} />}
       </Stack>
     </StyledFormBox>
   );

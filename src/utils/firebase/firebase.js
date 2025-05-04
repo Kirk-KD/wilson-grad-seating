@@ -31,7 +31,6 @@ tables (collection):
 
 */
 
-import dotenv from 'dotenv';
 import { initializeApp } from 'firebase/app';
 import {
   getAuth
@@ -39,8 +38,6 @@ import {
 import {
   getFirestore
 } from 'firebase/firestore';
-
-dotenv.config({ path: ".env.local" });
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
