@@ -4,10 +4,8 @@
   "description": "Wilson grad social seating selector react web app",
   "main": "src/index.jsx",
   "scripts": {
-    "css": "postcss src/index.css -o public/styles.css",
-    "react": "react-scripts start",
-    "start": "npm run css && npm run react",
-    "build": "npm run css && react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "deployfunctions": "firebase deploy --only functions"
   },
   "author": "Kirk Ding",
