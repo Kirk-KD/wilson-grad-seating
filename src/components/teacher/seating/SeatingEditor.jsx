@@ -33,7 +33,8 @@ export default function SeatingEditor() {
         dialogActions={
           <BeginDialogActions
             hasSelection={selectedSeatNumber != null}
-            hasOccupant={seatMaps[tableId][selectedSeatNumber.toString()] != null}
+            hasOccupant={selectedSeatNumber != null && seatMaps[tableId][selectedSeatNumber.toString()] != null}
+            onClickAssign={onCloseDialog}
             onClickCancle={onCloseDialog}
             onClickRemove={onCloseDialog}
             onClickMove={onCloseDialog}
