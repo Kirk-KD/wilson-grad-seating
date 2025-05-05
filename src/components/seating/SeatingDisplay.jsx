@@ -5,8 +5,8 @@ import StyledSeparatorBox from "./StyledSeparatorBox";
 
 export default function SeatingDisplay({ renderTable }) {
   const half = 27;
-  const firstHalfIds = Array.from({ length: half }, (_, i) => i);
-  const secondHalfIds = Array.from({ length: half }, (_, i) => half + i );
+  const firstHalfIds = Array.from({ length: half }, (_, i) => (i + 1).toString());
+  const secondHalfIds = Array.from({ length: half }, (_, i) => (half + i + 1).toString());
 
   return (
     <StyledSeatingDisplayBox>

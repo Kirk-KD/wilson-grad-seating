@@ -1,9 +1,17 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { DialogContent, DialogTitle, IconButton } from "@mui/material";
+import { useSeatingEditor } from '../context/SeatingSelectorContext';
 import StyledDialog from './StyledDialog';
 import TableSeatsDisplay from './TableSeatsDisplay';
 
-export default function TableDialog({ seatMaps, tableId, open, setOpen, dialogActions, selectedSeatNumber, setSelectedSeatNumber }) {
+export default function TableDialog({ open, setOpen, dialogActions }) {
+  const {
+    selectedTableId,
+    setSelectedTableId,
+    selectedSeatNumber,
+    setSelectedSeatNumber,
+  } = useSeatingEditor();
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -13,7 +21,7 @@ export default function TableDialog({ seatMaps, tableId, open, setOpen, dialogAc
       open={open}
     >
       <DialogTitle sx={{ m: 0, p: 2 }}>
-        Table {tableId}
+        Table #{selectedTableId}
       </DialogTitle>
 
       <IconButton
@@ -29,7 +37,7 @@ export default function TableDialog({ seatMaps, tableId, open, setOpen, dialogAc
       </IconButton>
 
       <DialogContent dividers>
-        <TableSeatsDisplay seatMaps={seatMaps} tableId={tableId} selectedSeat={selectedSeatNumber} setSeletedSeatNumber={setSelectedSeatNumber} />
+        <TableSeatsDisplay/>
       </DialogContent>
 
       {dialogActions}

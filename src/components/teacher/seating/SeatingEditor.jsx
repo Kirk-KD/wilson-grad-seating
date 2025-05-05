@@ -1,7 +1,7 @@
 import { Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import useLiveSeatMap from "../../../hooks/useLiveSeatMap";
+import { useSeatingEditor } from "../../context/SeatingSelectorContext";
 import SeatingDisplay from "../../seating/SeatingDisplay";
 import TableChip from "../../seating/TableChip";
 import TableDialog from "../../seating/TableDialog";
@@ -10,39 +10,20 @@ import BeginDialogActions from "./BeginDialogActions";
 
 export default function SeatingEditor() {
   const [openTableDialog, setOpenTableDialog] = useState(false);
-  const [tableId, setTableId] = useState(null);
-  const [selectedSeatNumber, setSelectedSeatNumber] = useState(null);
-  
-  const seatMaps = {};
-  for (let i = 0; i < 54; i++) {
-    seatMaps[i.toString()] = useLiveSeatMap(i.toString());
-  }
 
-  const onCloseDialog = () => {
-    setOpenTableDialog(false);
-    setTableId(null);
-    setSelectedSeatNumber(null);
-  };
+  const {
+    selectedTableId,
+    setSelectedTableId,
+    selectedSeatNumber,
+    setSelectedSeatNumber,
+  } = useSeatingEditor();
 
   return (
     <OverviewItemCard title="Seating Editor">
       <TableDialog
-        seatMaps={seatMaps}
-        tableId={tableId} 
         open={openTableDialog}
         setOpen={setOpenTableDialog}
-        dialogActions={
-          <BeginDialogActions
-            hasSelection={selectedSeatNumber != null}
-            hasOccupant={selectedSeatNumber != null && seatMaps[tableId][selectedSeatNumber.toString()] != null}
-            onClickAssign={onCloseDialog}
-            onClickCancle={onCloseDialog}
-            onClickRemove={onCloseDialog}
-            onClickMove={onCloseDialog}
-          />
-        }
-        selectedSeatNumber={selectedSeatNumber}
-        setSelectedSeatNumber={setSelectedSeatNumber}
+        dialogActions={ <BeginDialogActions closeDialog={() => setOpenTableDialog(false)} /> }
       />
 
       <Paper elevation={1} sx={{
@@ -54,15 +35,24 @@ export default function SeatingEditor() {
           padding: 2
         }}>
           <SeatingDisplay 
-            renderTable={tableId => <TableChip tableId={tableId} onClick={id => {
-              setTableId(id);
-              setOpenTableDialog(true);
-            }}
-          />} />
+            renderTable={
+              tableId => (
+                <TableChip
+                  // the tableId is the button's OWN tableID, not props drilling
+                  tableId={tableId}
+                  // open the dialog and set the currently active table ID
+                  onClick={id => {
+                    setOpenTableDialog(true);
+                    setSelectedTableId(id);
+                  }}
+                />
+              )
+            }
+          />
         </Box>
       </Paper>
 
       <Typography variant="p" align="center" width={"100%"}>Each button is a table. Click on one to see individual seats.</Typography>
     </OverviewItemCard>
-  )
+  );
 }

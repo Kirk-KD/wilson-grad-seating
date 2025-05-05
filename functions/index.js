@@ -34,3 +34,34 @@ export const createStudentAccount = functions.https.onCall(async (data, context)
     throw new functions.https.HttpsError("internal", err.message);
   }
 });
+
+export const deleteStudentAccount = functions.https.onCall(async ({ uid }, context) => {
+  const callerUid = context.auth?.uid;
+  if (!callerUid) throw new functions.https.HttpsError('unauthenticated');
+  
+  const caller = await admin.auth().getUser(callerUid);
+  if (!caller.customClaims?.admin) {
+    throw new functions.https.HttpsError('permission-denied', 'Not an admin');
+  }
+
+  const db = admin.firestore();
+  const collections = ["student_info", "student_users", "student_choice"];
+
+  await Promise.all(
+    collections.map(col => db.collection(col).doc(uid).delete())
+  );
+
+  await admin.auth().deleteUser(uid);
+});
+
+export const deleteTeacherAccount = functions.https.onCall(async ({ uid }, context) => {
+  const callerUid = context.auth?.uid;
+  if (!callerUid) throw new functions.https.HttpsError('unauthenticated');
+  
+  const caller = await admin.auth().getUser(callerUid);
+  if (!caller.customClaims?.admin) {
+    throw new functions.https.HttpsError('permission-denied', 'Not an admin');
+  }
+
+  await admin.auth().deleteUser(uid);
+});
