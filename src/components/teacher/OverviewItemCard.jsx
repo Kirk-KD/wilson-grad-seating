@@ -8,7 +8,7 @@ export default function OverviewItemCard({ children, title }) {
       margin: "1rem auto",
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",
+      alignItems: "center"
     }}>
       <CardHeader title={title} sx={{
         width: "100%",

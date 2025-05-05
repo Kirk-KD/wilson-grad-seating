@@ -1,10 +1,11 @@
-import { Paper } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import useLiveSeatMap from "../../../hooks/useLiveSeatMap";
 import SeatingDisplay from "../../seating/SeatingDisplay";
 import TableChip from "../../seating/TableChip";
 import TableDialog from "../../seating/TableDialog";
+import OverviewItemCard from "../OverviewItemCard";
 import BeginDialogActions from "./BeginDialogActions";
 
 export default function SeatingEditor() {
@@ -24,7 +25,7 @@ export default function SeatingEditor() {
   };
 
   return (
-    <>
+    <OverviewItemCard title="Seating Editor">
       <TableDialog
         seatMaps={seatMaps}
         tableId={tableId} 
@@ -60,6 +61,8 @@ export default function SeatingEditor() {
           />} />
         </Box>
       </Paper>
-    </>
+
+      <Typography variant="p" align="center" width={"100%"}>Each button is a table. Click on one to see individual seats.</Typography>
+    </OverviewItemCard>
   )
 }
