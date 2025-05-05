@@ -1,7 +1,7 @@
 import { IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 
-const StyledTableChipButton = styled(IconButton, {
+const StyledSeatChipButton = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'bgColor' && prop !== 'hoverColor',
 })(({ theme, bgColor, hoverColor }) => ({
   width: "2.5rem",
@@ -14,4 +14,4 @@ const StyledTableChipButton = styled(IconButton, {
   },
 }));
 
-export default StyledTableChipButton;
+export default StyledSeatChipButton;

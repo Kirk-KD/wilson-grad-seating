@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import AlternatingGrid from "./AlternatingGrid";
-import StyledSeatingDisplayPaper from "./StyledSeatingDisplayPaper";
+import StyledSeatingDisplayBox from "./StyledSeatingDisplayBox";
 import StyledSeparatorBox from "./StyledSeparatorBox";
 
 export default function SeatingDisplay({ renderTable }) {
@@ -9,7 +9,7 @@ export default function SeatingDisplay({ renderTable }) {
   const secondHalfIds = Array.from({ length: half }, (_, i) => half + i );
 
   return (
-    <StyledSeatingDisplayPaper elevation={1}>
+    <StyledSeatingDisplayBox>
       <AlternatingGrid
         items={firstHalfIds}
         renderItem={(id, idx) => renderTable(id)}
@@ -36,6 +36,6 @@ export default function SeatingDisplay({ renderTable }) {
         getKey={(id, idx) => id}
         pattern={[4, 5]}
       />
-    </StyledSeatingDisplayPaper>
+    </StyledSeatingDisplayBox>
   )
 }

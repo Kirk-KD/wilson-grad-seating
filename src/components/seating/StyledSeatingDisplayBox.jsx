@@ -1,7 +1,7 @@
-import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import { Box } from "@mui/system";
 
-const StyledSeatingDisplayPaper = styled(Paper)(({ theme }) => ({
+const StyledSeatingDisplayBox = styled(Box)(({ theme }) => ({
   display: "flex",
 
   flexDirection: "column",
@@ -14,10 +14,8 @@ const StyledSeatingDisplayPaper = styled(Paper)(({ theme }) => ({
     alignItems: "flex-start",
   },
 
-  padding: theme.spacing(4),
-  margin: theme.spacing(1),
-
-  overflow: "auto"
+  overflow: "auto",
+  width: "fit-content"
 }));
 
-export default StyledSeatingDisplayPaper;
+export default StyledSeatingDisplayBox;

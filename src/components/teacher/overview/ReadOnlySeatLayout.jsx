@@ -6,5 +6,5 @@ export default function ReadOnlySeatLayout() {
     <SeatingDisplay 
       renderTable={tableId => <TableChip tableId={tableId} onClick={id => {}} />}
     />
-  )
+  );
 }
