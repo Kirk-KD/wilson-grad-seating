@@ -5,7 +5,7 @@ import useLiveSeatMap from "../../../hooks/useLiveSeatMap";
 import SeatingDisplay from "../../seating/SeatingDisplay";
 import TableChip from "../../seating/TableChip";
 import TableDialog from "../../seating/TableDialog";
-import BeginMoveDialogActions from "./BeginMoveDialogActions";
+import BeginDialogActions from "./BeginDialogActions";
 
 export default function SeatingEditor() {
   const [openTableDialog, setOpenTableDialog] = useState(false);
@@ -31,8 +31,9 @@ export default function SeatingEditor() {
         open={openTableDialog}
         setOpen={setOpenTableDialog}
         dialogActions={
-          <BeginMoveDialogActions
-            hasSelection={selectedSeatNumber != null && seatMaps[selectedSeatNumber.toString()] != null}
+          <BeginDialogActions
+            hasSelection={selectedSeatNumber != null}
+            hasOccupant={seatMaps[tableId][selectedSeatNumber.toString()] != null}
             onClickCancle={onCloseDialog}
             onClickRemove={onCloseDialog}
             onClickMove={onCloseDialog}
