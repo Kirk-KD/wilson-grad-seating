@@ -29,6 +29,7 @@
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
     "@mui/system": "^7.0.2",
+    "@mui/x-data-grid": "^8.2.0",
     "@tailwindcss/postcss": "^4.1.5",
     "dotenv": "^16.5.0",
     "eslint": "^8.57.1",

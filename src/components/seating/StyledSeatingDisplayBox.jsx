@@ -15,7 +15,8 @@ const StyledSeatingDisplayBox = styled(Box)(({ theme }) => ({
   },
 
   overflow: "auto",
-  width: "fit-content"
+  width: "fit-content",
+  padding: 16
 }));
 
 export default StyledSeatingDisplayBox;

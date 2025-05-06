@@ -10,6 +10,7 @@ READ/WRITE BY ADMIN
 student_users (collection):
   <uid> (document):
     email
+    oen
 
 READ/CREATE BY ADMIN; DELETE BY SELF; NO UPDATES
 admin_users (collection):
@@ -48,6 +49,6 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);

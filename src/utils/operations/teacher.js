@@ -7,6 +7,7 @@
  * - remove student from their own seat
  */
 
+import { auth } from "../firebase/firebase.js";
 import * as seating from "../firebase/seating.js";
 import * as users from "../firebase/users.js";
 
