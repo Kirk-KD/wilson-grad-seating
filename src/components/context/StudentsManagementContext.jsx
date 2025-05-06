@@ -5,12 +5,14 @@ const StudentsManagementContext = createContext(null);
 export function StudentsManagementProvider({ children }) {
   const [selectedUids, setSelectedUids] = useState([]);
   const [newStudentDialogOpen, setNewStudentDialogOpen] = useState(false);
+  const [deleteStudentsDialogOpen, setDeleteStudentsDialogOpen] = useState(false);
 
   return (
     <StudentsManagementContext.Provider
       value={{
         selectedUids, setSelectedUids,
-        newStudentDialogOpen, setNewStudentDialogOpen
+        newStudentDialogOpen, setNewStudentDialogOpen,
+        deleteStudentsDialogOpen, setDeleteStudentsDialogOpen,
       }}
     >
       {children}

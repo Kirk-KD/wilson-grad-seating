@@ -49,10 +49,14 @@ const StyledTextField = styled(TextField)(({ theme, ownerState }) => ({
 }));
 
 export default function StudentDataToolbar() {
-  const { selectedUids, setNewStudentDialogOpen } = useStudentsManagement();
+  const { selectedUids, setNewStudentDialogOpen, setDeleteStudentsDialogOpen } = useStudentsManagement();
 
   const onClickNewStudent = () => {
     setNewStudentDialogOpen(true);
+  }
+
+  const onClickDeleteStudents = () => {
+    if (selectedUids.length) setDeleteStudentsDialogOpen(true);
   }
 
   return (
@@ -72,13 +76,16 @@ export default function StudentDataToolbar() {
       <Divider orientation="vertical" variant="middle" flexItem sx={{ mx: 0.5 }} />
 
       <Tooltip title="Delete">
-        <IconButton disabled={selectedUids.length === 0}>
-          {
-            selectedUids.length < 1 ?
-            <DeleteIcon /> : 
-            <DeleteSweepIcon />
-          }
-        </IconButton>
+        {/* span: show tooltip even when disabled */}
+        <span>
+          <IconButton disabled={selectedUids.length === 0} onClick={onClickDeleteStudents}>
+            {
+              selectedUids.length <= 1 ?
+              <DeleteIcon /> : 
+              <DeleteSweepIcon />
+            }
+          </IconButton>
+        </span>
       </Tooltip>
 
       {/* Buttons above are left aligned */}

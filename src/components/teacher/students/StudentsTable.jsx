@@ -34,7 +34,7 @@ export default function StudentsTable() {
           showToolbar
           checkboxSelection
           onRowSelectionModelChange={(newSelection) => {
-            setSelectedUids(newSelection);
+            setSelectedUids(Array.from(newSelection.ids));
           }}
           sx={{ border: 0 }}
         />

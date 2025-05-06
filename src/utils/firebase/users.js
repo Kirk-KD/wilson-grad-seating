@@ -36,6 +36,12 @@ export async function deleteStudent({ uid }) {
   return result.data;
 }
 
+export async function deleteStudentsBulk({ uids }) {
+  const fn = httpsCallable(functions, 'deleteStudentsBulk');
+  const result = await fn({ uids });
+  return result.data;
+}
+
 export async function registerTeacher({ email, password }) {
   const fn = httpsCallable(functions, 'createStudentAccount'); // this cloud function works with both teacher and student accounts
   const result = await fn({ email, password, isAdmin: true });

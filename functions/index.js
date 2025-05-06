@@ -61,6 +61,39 @@ export const deleteStudentAccount = functions.https.onCall(async (req) => {
   await fbAdmin.auth().deleteUser(req.data.uid);
 });
 
+export const deleteStudentsBulk = functions.https.onCall(async (req) => {
+  const callerUid = req.auth?.uid;
+  if (!callerUid) throw new functions.https.HttpsError('unauthenticated');
+  
+  const caller = await fbAdmin.auth().getUser(callerUid);
+  if (!caller.customClaims?.admin) {
+    throw new functions.https.HttpsError('permission-denied', 'Not an admin');
+  }
+
+  const { uids } = req.data;
+  if (!Array.isArray(uids) || uids.length === 0) {
+    throw new functions.https.HttpsError('invalid-argument', 'uids must be a non-empty array');
+  }
+
+  const db = fbAdmin.firestore();
+  const collections = ["student_info", "student_users", "student_choice"];
+
+  const deletePromises = [];
+
+  for (const uid of uids) {
+    for (const col of collections) {
+      const docRef = db.collection(col).doc(uid);
+      deletePromises.push(docRef.delete().catch(() => null)); // Swallow not-found errors
+    }
+
+    deletePromises.push(fbAdmin.auth().deleteUser(uid).catch(() => null));
+  }
+
+  await Promise.all(deletePromises);
+
+  return { status: 'success', deleted: uids.length };
+});
+
 export const deleteTeacherAccount = functions.https.onCall(async (req) => {
   const callerUid = req.auth?.uid;
   if (!callerUid) throw new functions.https.HttpsError('unauthenticated');
