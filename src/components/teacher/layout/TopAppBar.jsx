@@ -1,11 +1,7 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import AccountButton from './AccountButton';
-import Search from "./Search";
-import SearchIconWrapper from "./SearchIconWrapper";
-import StyledInputBase from "./StyledInputBase";
 
 export default function TeacherTopAppBar() {
   return (
@@ -30,7 +26,7 @@ export default function TeacherTopAppBar() {
           >
             Dashboard
           </Typography>
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -38,7 +34,7 @@ export default function TeacherTopAppBar() {
               placeholder="Search students, tools..."
               inputProps={{ 'aria-label': 'search' }}
             />
-          </Search>
+          </Search> */}
           <AccountButton />
         </Toolbar>
       </AppBar>

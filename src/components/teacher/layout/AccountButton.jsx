@@ -1,5 +1,6 @@
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { IconButton, Menu, MenuItem } from "@mui/material";
+import { Box, useTheme } from '@mui/system';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +27,8 @@ export default function AccountButton() {
     return () => unsubscribe();
   }, []);
 
+  const theme = useTheme();
+
   const navigate = useNavigate();
 
   return <>
@@ -50,6 +53,13 @@ export default function AccountButton() {
       open={Boolean(anchorEl)}
       onClose={handleCloseProfileMenu}
     >
+      <Box sx={{
+        marginX: 2,
+        borderBottom: `1px solid ${theme.palette.divider}`,
+        paddingY: 1
+      }}>
+        {Boolean(user) && user.email}
+      </Box>
       <MenuItem onClick={() => {
         handleCloseProfileMenu();
         if (user) auth.signOut();

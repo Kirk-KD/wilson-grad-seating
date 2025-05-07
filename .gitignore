@@ -24,3 +24,5 @@ yarn-error.log*
 
 /scripts/service-acc-key.json
 firebase-debug.log
+
+/.firebase
