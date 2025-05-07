@@ -1,7 +1,7 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import AccountButton from './AccountButton';
+import AccountButton from '../../AccountButton';
 
 export default function TeacherTopAppBar() {
   return (

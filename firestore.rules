@@ -35,11 +35,7 @@ service cloud.firestore {
       allow read: if isAuth();
       allow create, delete: if false;
 
-      allow update: if isAdmin() || (
-        isAuth() &&
-        (resource.data.seats[request.resource.data.seatNumber] == null ||
-        resource.data.seats[request.resource.data.seatNumber] == request.auth.uid)
-      );
+      allow update: if isAuth();
     }
   }
 }

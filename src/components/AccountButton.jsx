@@ -4,7 +4,7 @@ import { Box, useTheme } from '@mui/system';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../../../utils/firebase/firebase';
+import { auth } from '../utils/firebase/firebase';
 
 export default function AccountButton() {
   const [anchorEl, setAnchorEl] = useState(null);

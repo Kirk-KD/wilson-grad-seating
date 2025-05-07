@@ -1,9 +1,9 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSeatingSelector } from "../../context/SeatingSelectorContext";
+import OverviewItemCard from "../../OverviewItemCard";
 import SeatingDisplay from "../../seating/SeatingDisplay";
 import TableChip from "../../seating/TableChip";
-import OverviewItemCard from "../OverviewItemCard";
 
 export default function SeatingEditor() {
   const {

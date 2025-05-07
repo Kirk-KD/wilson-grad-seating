@@ -1,8 +1,8 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { DialogContent, DialogTitle, IconButton } from "@mui/material";
-import { useSeatingSelector } from '../../context/SeatingSelectorContext';
-import StyledDialog from '../../seating/StyledDialog';
-import TableSeatsDisplay from '../../seating/TableSeatsDisplay';
+import { useSeatingSelector } from '../context/SeatingSelectorContext';
+import StyledDialog from './StyledDialog';
+import TableSeatsDisplay from './TableSeatsDisplay';
 
 export default function TableDialog({ dialogActions }) {
   const {

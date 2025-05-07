@@ -3,13 +3,13 @@ import AlternatingGrid from "./AlternatingGrid";
 import StyledSeatingDisplayBox from "./StyledSeatingDisplayBox";
 import StyledSeparatorBox from "./StyledSeparatorBox";
 
-export default function SeatingDisplay({ renderTable }) {
+export default function SeatingDisplay({ renderTable, sx }) {
   const half = 27;
   const firstHalfIds = Array.from({ length: half }, (_, i) => (i + 1).toString());
   const secondHalfIds = Array.from({ length: half }, (_, i) => (half + i + 1).toString());
 
   return (
-    <StyledSeatingDisplayBox>
+    <StyledSeatingDisplayBox sx={sx}>
       <AlternatingGrid
         items={firstHalfIds}
         renderItem={(id, idx) => renderTable(id)}

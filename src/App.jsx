@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DashboardLayout from "./components/teacher/layout/DashboardLayout";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
-import StudentDashboard from "./pages/student/StudentDashboard";
+import StudentPage from "./pages/student/StudentPage";
 import Audit from "./pages/teacher/Audit";
 import Overview from "./pages/teacher/Overview";
 import Seating from "./pages/teacher/Seating";
@@ -20,7 +20,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />
-          <Route path="/student" element={<StudentDashboard />} />
+          <Route path="/student" element={<StudentPage />} />
           <Route path="/admin" element={<DashboardLayout />}>
             <Route index element={<Overview />} />
             <Route path="seating" element={<Seating />} />

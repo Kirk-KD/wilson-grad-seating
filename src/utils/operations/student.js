@@ -33,8 +33,8 @@ export async function claimUnoccupiedSeat({ tableId, seatNumber }) {
   if (targetSeatOccupant != null) throw new Error('Seat is occupied');
 
   await vacateOwnSeat();
-
-  return await assignSeat({ tableId, seatNumber, uid: user.uid });
+  await users.setStudentSeatChoice({ tableId, seatNumber, uid: user.uid });
+  await seating.assignSeat({ tableId, seatNumber, uid: user.uid });
 }
 
 export async function vacateOwnSeat() {
@@ -44,6 +44,9 @@ export async function vacateOwnSeat() {
   const isTeacher = await users.isCurrentUserTeacher();
   if (isTeacher) throw new Error('Not a student');
 
-  const { oldTableId, oldSeatNumber } = await getOwnSeatChoice();
-  if (oldTableId != null) await seating.vacateSeat({ tableId: oldTableId, seatNumber: oldSeatNumber });
+  const { tableId: oldTableId, seatNumber: oldSeatNumber } = await getOwnSeatChoice();
+  if (oldTableId !== null) {
+    await seating.vacateSeat({ tableId: oldTableId, seatNumber: oldSeatNumber });
+    await users.clearStudentSeatChoice({ uid: user.uid });
+  }
 }

@@ -8,7 +8,8 @@ export default function OverviewItemCard({ children, title }) {
       margin: "1rem auto",
       display: "flex",
       flexDirection: "column",
-      alignItems: "center"
+      alignItems: "center",
+      width: "100%"
     }}>
       <CardHeader title={title} sx={{
         width: "100%",
@@ -18,5 +19,5 @@ export default function OverviewItemCard({ children, title }) {
         width: "fit-content"
       }}>{children}</CardContent>
     </Card>
-  )
+  );
 }

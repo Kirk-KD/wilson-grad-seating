@@ -4,7 +4,7 @@ import { app, auth, db } from './firebase.js';
 
 const functions = getFunctions(app, "us-central1");
 
-export function subscribeToStudents(callback) {
+export function adminSubscribeToStudents(callback) {
   const users = {};
   const infos = {};
   const choices = {};
@@ -62,6 +62,54 @@ export function subscribeToStudents(callback) {
 
   return () => {
     unsubUsers();
+    unsubInfos();
+    unsubChoices();
+  };
+}
+
+export function studentSubscribeToStudents(callback) {
+  const infos = {};
+  const choices = {};
+
+  function emit() {
+    const result = {};
+    const allUids = Object.keys(infos);
+
+    allUids.forEach(uid => {
+      result[uid] = {
+        ...infos[uid],
+        ...choices[uid]
+      };
+    });
+
+    callback(result);
+  }
+
+  const unsubInfos = onSnapshot(
+    collection(db, 'student_info'),
+    snapshot => {
+      snapshot.docChanges().forEach(change => {
+        const id = change.doc.id;
+        if (change.type === 'removed') delete infos[id];
+        else infos[id] = change.doc.data();
+      });
+      emit();
+    }
+  );
+
+  const unsubChoices = onSnapshot(
+    collection(db, 'student_choice'),
+    snapshot => {
+      snapshot.docChanges().forEach(change => {
+        const id = change.doc.id;
+        if (change.type === 'removed') delete choices[id];
+        else choices[id] = change.doc.data();
+      });
+      emit();
+    }
+  );
+
+  return () => {
     unsubInfos();
     unsubChoices();
   };

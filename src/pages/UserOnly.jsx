@@ -32,7 +32,7 @@ export default function UserOnly({ children, admin }) {
   if (authLoading) return <div>Logging in…</div>;
   if (!user) return <Navigate to="/" replace />;
   if (claimsLoading) return <div>Checking permissions…</div>;
-  if (claims?.admin != admin) return <Navigate to="/" replace />;
+  if (Boolean(claims?.admin) != admin) return <Navigate to="/" replace />;
 
   return children;
 }
