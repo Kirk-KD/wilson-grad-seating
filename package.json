@@ -6,7 +6,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deployfunctions": "firebase deploy --only functions"
+    "deployfunctions": "firebase deploy --only functions",
+    "deployhosting": "firebase deploy --only hosting"
   },
   "author": "Kirk Ding",
   "license": "MIT",
