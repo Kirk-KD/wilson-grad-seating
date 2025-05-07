@@ -7,7 +7,7 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return isAuth() && request.auth.token.admin == true;
+      return isAuth() && "admin" in request.auth.token && request.auth.token.admin == true;
     }
 
     match /admin_users/{uid} {
@@ -25,7 +25,7 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
 
-    match /student_choices/{uid} {
+    match /student_choice/{uid} {
       allow read: if isAuth();
       allow update: if isAdmin() || (isAuth() && request.auth.uid == uid);
       allow create, delete: if isAdmin();
@@ -35,17 +35,11 @@ service cloud.firestore {
       allow read: if isAuth();
       allow create, delete: if false;
 
-      match /seats/{seatNumber} {
-        allow read: if isAuth();
-        allow create, delete: if false;
-        allow update: if isAdmin() || (
-          isAuth() 
-          && (
-            resource.data.uid == null || 
-            resource.data.uid == request.auth.uid
-          )
-        );
-      }
+      allow update: if isAdmin() || (
+        isAuth() &&
+        (resource.data.seats[request.resource.data.seatNumber] == null ||
+        resource.data.seats[request.resource.data.seatNumber] == request.auth.uid)
+      );
     }
   }
 }
