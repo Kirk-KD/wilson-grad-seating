@@ -2,7 +2,6 @@ import {
   collection,
   doc,
   getDoc,
-  getDocs,
   onSnapshot,
   updateDoc
 } from 'firebase/firestore';
@@ -14,43 +13,31 @@ const validTableIds = Array.from({ length: numTables }, (_, i) => (i + 1).toStri
 const validSeatNumbers = Array.from({ length: numSeats }, (_, i) => (i + 1).toString());
 
 export function subscribeToTables(callback) {
-  return onSnapshot(collection(db, 'tables'), async snapshot => {
-    const tablePromises = snapshot.docs.map(async docSnap => {
-      const seatsSnapshot = await getDocs(collection(db, 'tables', docSnap.id, 'seats'));
-      const seats = {};
-      seatsSnapshot.forEach(seatDoc => {
-        seats[seatDoc.id] = seatDoc.data();
-      });
-      return [docSnap.id, { ...docSnap.data(), seats }];
+  return onSnapshot(collection(db, 'tables'), snapshot => {
+    const result = {};
+    snapshot.docs.forEach(docSnap => {
+      result[docSnap.id] = docSnap.data();
     });
-    const entries = await Promise.all(tablePromises);
-    const result = Object.fromEntries(entries);
     callback(result);
   });
 }
 
 export async function assignSeat({ tableId, seatNumber, uid }) {
   const tableRef = doc(db, 'tables', tableId);
-  await updateDoc(tableRef, {
-    [seatNumber]: uid
-  }, { merge: true });
+  await updateDoc(tableRef, { [`seats.${seatNumber}`]: uid });
 }
 
 export async function vacateSeat({ tableId, seatNumber }) {
   const tableRef = doc(db, 'tables', tableId);
-  await updateDoc(tableRef, {
-    [seatNumber]: null
-  }, { merge: true });
+  await updateDoc(tableRef, { [`seats.${seatNumber}`]: null });
 }
 
 export async function getSeatOccupant({ tableId, seatNumber }) {
   const tableRef = doc(db, 'tables', tableId);
   const docSnap = await getDoc(tableRef);
-
   if (!docSnap.exists()) return null;
-
   const data = docSnap.data();
-  return data[seatNumber] ?? null;
+  return data.seats?.[seatNumber] ?? null;
 }
 
 export function isValidSeat({ tableId, seatNumber }) {

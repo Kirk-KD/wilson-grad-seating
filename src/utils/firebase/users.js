@@ -1,27 +1,70 @@
-import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { app, auth, db } from './firebase.js';
 
 const functions = getFunctions(app, "us-central1");
 
 export function subscribeToStudents(callback) {
-  return onSnapshot(collection(db, 'student_users'), async snapshot => {
-    const studentPromises = snapshot.docs.map(async userSnap => {
-      const infoSnap = await getDoc(doc(db, 'student_info', userSnap.id));
-      const choiceSnap = await getDoc(doc(db, 'student_choice', userSnap.id));
-      return [
-        userSnap.id,
-        {
-          ...userSnap.data(), // 'student_users', email and oen
-          ...(infoSnap.exists() ? infoSnap.data() : {}), // 'student_info', fname and lname
-          ...(choiceSnap.exists() ? choiceSnap.data() : {}) // 'student_choice', table and seat
-        }
-      ];
+  const users = {};
+  const infos = {};
+  const choices = {};
+
+  function emit() {
+    const result = {};
+    const allUids = Object.keys(users);
+
+    allUids.forEach(uid => {
+      result[uid] = {
+        ...users[uid],
+        ...infos[uid],
+        ...choices[uid]
+      };
     });
-    const entries = await Promise.all(studentPromises);
-    const result = Object.fromEntries(entries);
+
     callback(result);
-  });
+  }
+
+  const unsubUsers = onSnapshot(
+    collection(db, 'student_users'),
+    snapshot => {
+      snapshot.docChanges().forEach(change => {
+        const id = change.doc.id;
+        if (change.type === 'removed') delete users[id];
+        else users[id] = change.doc.data();
+      });
+      emit();
+    }
+  );
+
+  const unsubInfos = onSnapshot(
+    collection(db, 'student_info'),
+    snapshot => {
+      snapshot.docChanges().forEach(change => {
+        const id = change.doc.id;
+        if (change.type === 'removed') delete infos[id];
+        else infos[id] = change.doc.data();
+      });
+      emit();
+    }
+  );
+
+  const unsubChoices = onSnapshot(
+    collection(db, 'student_choice'),
+    snapshot => {
+      snapshot.docChanges().forEach(change => {
+        const id = change.doc.id;
+        if (change.type === 'removed') delete choices[id];
+        else choices[id] = change.doc.data();
+      });
+      emit();
+    }
+  );
+
+  return () => {
+    unsubUsers();
+    unsubInfos();
+    unsubChoices();
+  };
 }
 
 export async function registerStudent({ fname, lname, email, oen }) {
@@ -71,6 +114,16 @@ export async function getStudentSeatChoice({ uid }) {
   const data = docSnap.data();
 
   return { tableId: data.tableId, seatNumber: data.seatNumber };
+}
+
+export async function setStudentSeatChoice({ uid, tableId, seatNumber }) {
+  const choiceRef = doc(db, 'student_choice', uid);
+  await updateDoc(choiceRef, { tableId, seatNumber });
+}
+
+export async function clearStudentSeatChoice({ uid }) {
+  const choiceRef = doc(db, 'student_choice', uid);
+  await updateDoc(choiceRef, { tableId: null, seatNumber: null });
 }
 
 export async function getStudentInfo({ uid }) {

@@ -1,24 +1,30 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { DialogContent, DialogTitle, IconButton } from "@mui/material";
-import { useSeatingEditor } from '../context/SeatingSelectorContext';
-import StyledDialog from './StyledDialog';
-import TableSeatsDisplay from './TableSeatsDisplay';
+import { useSeatingSelector } from '../../context/SeatingSelectorContext';
+import StyledDialog from '../../seating/StyledDialog';
+import TableSeatsDisplay from '../../seating/TableSeatsDisplay';
 
-export default function TableDialog({ open, setOpen, dialogActions }) {
+export default function TableDialog({ dialogActions }) {
   const {
     selectedTableId,
     setSelectedTableId,
     selectedSeatNumber,
     setSelectedSeatNumber,
-  } = useSeatingEditor();
+    openTableDialog,
+    setOpenTableDialog
+  } = useSeatingSelector();
 
+  // close dialog but also clear all selections
   const handleClose = () => {
-    setOpen(false);
+    setOpenTableDialog(false);
+    setSelectedTableId(null);
+    setSelectedSeatNumber(null);
   };
 
   return (
     <StyledDialog
-      open={open}
+      open={openTableDialog}
+      onClose={handleClose}
     >
       <DialogTitle sx={{ m: 0, p: 2 }}>
         Table #{selectedTableId}

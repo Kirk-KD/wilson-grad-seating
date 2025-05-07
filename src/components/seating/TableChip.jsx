@@ -8,7 +8,7 @@ export default function TableChip({ tableId, onClick }) {
 
   const table = tables[tableId];
   const occupied = table
-    ? Object.values(table.seats || {}).filter(s => s.uid != null).length
+    ? Object.values(table.seats || {}).filter(uid => uid != null).length
     : 0;
 
   const isAvailable = occupied < 10;

@@ -1,31 +1,18 @@
 import { Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
-import { useSeatingEditor } from "../../context/SeatingSelectorContext";
+import { useSeatingSelector } from "../../context/SeatingSelectorContext";
 import SeatingDisplay from "../../seating/SeatingDisplay";
 import TableChip from "../../seating/TableChip";
-import TableDialog from "../../seating/TableDialog";
 import OverviewItemCard from "../OverviewItemCard";
-import BeginDialogActions from "./BeginDialogActions";
 
 export default function SeatingEditor() {
-  const [openTableDialog, setOpenTableDialog] = useState(false);
-
   const {
-    selectedTableId,
     setSelectedTableId,
-    selectedSeatNumber,
-    setSelectedSeatNumber,
-  } = useSeatingEditor();
+    setOpenTableDialog
+  } = useSeatingSelector();
 
   return (
     <OverviewItemCard title="Seating Editor">
-      <TableDialog
-        open={openTableDialog}
-        setOpen={setOpenTableDialog}
-        dialogActions={ <BeginDialogActions closeDialog={() => setOpenTableDialog(false)} /> }
-      />
-
       <Paper elevation={1} sx={{
         margin: "1rem"
       }}>
@@ -52,7 +39,7 @@ export default function SeatingEditor() {
         </Box>
       </Paper>
 
-      <Typography variant="p" align="center" width={"100%"}>Each button is a table. Click on one to see individual seats.</Typography>
+      <Typography color="textSecondary" variant="subtitle1" align="center" width={"100%"}>Each button is a table. Click on one to see and manage individual seats.</Typography>
     </OverviewItemCard>
   );
 }

@@ -1,5 +1,6 @@
-import { Grid } from "@mui/material";
-import { useSeatingEditor } from "../context/SeatingSelectorContext";
+import { Grid, Typography } from "@mui/material";
+import { Box } from "@mui/system";
+import { useSeatingSelector } from "../context/SeatingSelectorContext";
 import { useTablesContext } from "../context/TablesContext";
 import SeatChip from "./SeatChip";
 
@@ -10,22 +11,25 @@ export default function TableSeatsDisplay() {
     setSelectedTableId,
     selectedSeatNumber,
     setSelectedSeatNumber,
-  } = useSeatingEditor();
+  } = useSeatingSelector();
 
   return (
-    <Grid container spacing={2}>
-      {
-        selectedTableId != null &&
-        Object.entries(tables[selectedTableId].seats || {}).map(([seatNumber, uid]) => (
-          <Grid key={seatNumber}>
-            <SeatChip
-              seatNumber={seatNumber} 
-              occupied={uid != null} 
-              onClick={() => setSelectedSeatNumber(seatNumber)}
-            />
-          </Grid>
-        ))
-      }
-    </Grid>
+    <Box>
+      <Grid container spacing={2}>
+        {
+          selectedTableId != null &&
+          Object.entries(tables[selectedTableId].seats || {}).map(([seatNumber, uid]) => (
+            <Grid key={seatNumber}>
+              <SeatChip
+                seatNumber={seatNumber} 
+                occupant={uid} 
+                onClick={() => setSelectedSeatNumber(seatNumber)}
+              />
+            </Grid>
+          ))
+        }
+      </Grid>
+      <Typography color="textSecondary" variant="subtitle1" textAlign={"left"} marginTop={1}>Select a seat above to continue.</Typography>
+    </Box>
   );
 }

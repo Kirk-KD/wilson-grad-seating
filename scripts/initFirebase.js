@@ -13,23 +13,17 @@ const db = admin.firestore();
 async function seedTables() {
   const batch = db.batch();
 
-  const emptySeatMap = {};
-  for (let seat = 1; seat <= 10; seat++) {
-    emptySeatMap[seat] = null;
-  }
-
   for (let i = 1; i <= 54; i++) {
-    const tableRef = db.collection("tables").doc(i.toString());
-    batch.set(tableRef, {});
-
+    const tableRef = db.collection('tables').doc(i.toString());
+    const seats = {};
     for (let seat = 1; seat <= 10; seat++) {
-      const seatRef = tableRef.collection("seats").doc(seat.toString());
-      batch.set(seatRef, { uid: null });
+      seats[seat.toString()] = null;
     }
+    batch.set(tableRef, { seats });
   }
 
   await batch.commit();
-  console.log("Seeded tables 1-54.")
+  console.log('Seeded embedded tables 1-54 with seats.');
 }
 
 async function createAdmin() {
@@ -50,4 +44,4 @@ async function createAdmin() {
 }
 
 seedTables();
-createAdmin();
+// createAdmin();
