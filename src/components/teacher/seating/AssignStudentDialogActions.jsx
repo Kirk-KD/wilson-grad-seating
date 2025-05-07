@@ -1,7 +1,9 @@
 import { Button, DialogActions } from "@mui/material";
+import { useState } from "react";
 import { assignStudentToSeat } from "../../../utils/operations/teacher.js";
 import { useSeatingSelector } from "../../context/SeatingSelectorContext";
 import { useTeacherSeatingEditor } from "../../context/TeacherSeatingEditorContext.jsx";
+import LoadingButton from "../../LoadingButton.jsx";
 
 export default function AssignStudentDialogActions() {
   const { 
@@ -16,8 +18,11 @@ export default function AssignStudentDialogActions() {
     selectedStudent
   } = useTeacherSeatingEditor();
 
+  const [busy, setBusy] = useState(false);
+
   const onClickAssign = async () => {
     try {
+      setBusy(true);
       await assignStudentToSeat({ tableId: selectedTableId, seatNumber: selectedSeatNumber, uid: selectedStudent.uid });
       setSelectedStudent(null);
     } catch (err) {
@@ -25,6 +30,7 @@ export default function AssignStudentDialogActions() {
     } finally {
       setOpenAssignDialog(false);
       setSelectedSeatNumber(null);
+      setBusy(false);
     }
   }
 
@@ -38,11 +44,12 @@ export default function AssignStudentDialogActions() {
     selectedTableId == null;
   
   return <DialogActions>
-    <Button 
+    <LoadingButton
       variant="contained" 
-      disabled={cannotAssign} 
+      disabled={cannotAssign || busy} 
+      busy={busy}
       onClick={onClickAssign}
-    >Assign</Button>
-    <Button variant="outlined" onClick={closeDialog}>Cancel</Button>
+    >Assign</LoadingButton>
+    <Button variant="outlined" onClick={closeDialog} disabled={busy}>Cancel</Button>
   </DialogActions>
 }

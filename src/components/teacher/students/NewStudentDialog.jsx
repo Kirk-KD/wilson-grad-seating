@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import * as teacher from "../../../utils/operations/teacher.js";
 import { useStudentsManagement } from '../../context/StudentsManagementContext';
+import LoadingButton from '../../LoadingButton.jsx';
 
 export default function NewStudentDialog() {
   const { newStudentDialogOpen, setNewStudentDialogOpen } = useStudentsManagement();
@@ -18,6 +19,8 @@ export default function NewStudentDialog() {
   const [lname, setLname] = useState('');
   const [email, setEmail] = useState('');
   const [oen, setOen] = useState('');
+
+  const [busy, setBusy] = useState(false);
 
   // Reset fields when dialog opens
   useEffect(() => {
@@ -33,11 +36,14 @@ export default function NewStudentDialog() {
 
   const handleAdd = async () => {
     try {
+      setBusy(true);
       await teacher.registerStudent({ fname, lname, email, oen });
       onClose();
     } catch (err) {
       // TODO add error popup if time allows
       alert(`Failed to add new student: ${err.message}`);
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -73,10 +79,10 @@ export default function NewStudentDialog() {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={handleAdd} variant="contained" disabled={!fname || !lname || !email || !oen}>
+        <Button onClick={onClose} disabled={busy}>Cancel</Button>
+        <LoadingButton busy={busy} onClick={handleAdd} variant="contained" disabled={!fname || !lname || !email || !oen || busy}>
           Add
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

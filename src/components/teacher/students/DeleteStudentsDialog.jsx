@@ -1,8 +1,9 @@
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { useState } from "react";
 import { deleteStudentsBulk } from "../../../utils/operations/teacher.js";
 import { useStudentsContext } from "../../context/StudentsContext";
 import { useStudentsManagement } from "../../context/StudentsManagementContext";
+import LoadingButton from "../../LoadingButton.jsx";
 
 export default function DeleteStudentsDialog() {
   const { deleteStudentsDialogOpen, setDeleteStudentsDialogOpen, selectedUids, setSelectedUids } = useStudentsManagement();
@@ -39,48 +40,37 @@ export default function DeleteStudentsDialog() {
         }
       </DialogTitle>
       <DialogContent>
-        {busy ? (
-          <>
-            <Typography>Deleting student account(s)...</Typography>
-            <Skeleton variant="rectangular" height={80} />
-          </>
-        ) : 
-        (
-          <>
-            {
-              Boolean(countBooked) &&
-              <Alert variant="filled" severity="warning">{`${countBooked} student(s) already booked their seat, don't forget to notify them!`}</Alert>
-            }
-            <Typography marginBottom={1}>Are you sure you want to delete the following student account(s)?</Typography>
-            <TableContainer component={Paper}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Student</TableCell>
-                    <TableCell>Email</TableCell>
-                    <TableCell align="right">Booked seat</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {toBeDeleted.map(({ uid, fname, lname, tableId, seatNumber, email }) => (
-                    <TableRow key={uid} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                      <TableCell component="th" scope="row">{`${lname}, ${fname}`}</TableCell>
-                      <TableCell>{email}</TableCell>
-                      <TableCell align="right">{tableId != null ? `Table ${tableId}, seat ${seatNumber}` : "-"}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </>
-        )
+        {
+          Boolean(countBooked) &&
+          <Alert variant="filled" severity="warning">{`${countBooked} student(s) already booked their seat, don't forget to notify them!`}</Alert>
         }
+        <Typography marginBottom={1}>Are you sure you want to delete the following student account(s)?</Typography>
+        <TableContainer component={Paper}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Student</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell align="right">Booked seat</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {toBeDeleted.map(({ uid, fname, lname, tableId, seatNumber, email }) => (
+                <TableRow key={uid} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell component="th" scope="row">{`${lname}, ${fname}`}</TableCell>
+                  <TableCell>{email}</TableCell>
+                  <TableCell align="right">{tableId != null ? `Table ${tableId}, seat ${seatNumber}` : "-"}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleDelete} variant="contained" color="warning">
+        <Button onClick={handleClose} disabled={busy}>Cancel</Button>
+        <LoadingButton onClick={handleDelete} variant="contained" color="warning" disabled={busy} busy={busy}>
           Delete
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );
