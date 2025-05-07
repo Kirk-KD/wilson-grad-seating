@@ -26,7 +26,9 @@ export async function deleteStudent({ uid }) {
   const isTeacher = await users.isCurrentUserTeacher();
   if (!isTeacher) throw new Error('Not a teacher');
 
-  return await users.deleteStudent({ uid });
+  const seat = await users.getStudentSeatChoice({ uid });
+  if (seat.tableId != null) await seating.vacateSeat(seat);
+  await users.deleteStudent({ uid });
 }
 
 export async function deleteStudentsBulk({ uids }) {
@@ -34,6 +36,11 @@ export async function deleteStudentsBulk({ uids }) {
   if (!user) throw new Error('Not authenticated');
   const isTeacher = await users.isCurrentUserTeacher();
   if (!isTeacher) throw new Error('Not a teacher');
+
+  uids.forEach(async uid => {
+    const seat = await users.getStudentSeatChoice({ uid });
+    if (seat.tableId != null) await seating.vacateSeat(seat);
+  });
 
   return await users.deleteStudentsBulk({ uids });
 }
