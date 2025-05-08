@@ -1,12 +1,10 @@
-name: Count Lines of Code
+name: LOC Count
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -14,17 +12,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Install cloc
-        run: sudo apt-get install -y cloc
+        run: sudo apt-get update && sudo apt-get install -y cloc
 
-      - name: Count lines of code
-        run: cloc . --exclude-dir=.github,.git --out=cloc-report.txt
+      - name: Count lines of code (excluding JSON)
+        id: cloc
+        run: |
+          cloc . --exclude-dir=.github,.git --exclude-ext=json --md > cloc-report.md
+          echo "## 📊 Lines of Code Report (excluding JSON)" >> $GITHUB_STEP_SUMMARY
+          cat cloc-report.md >> $GITHUB_STEP_SUMMARY
 
-      - name: Upload cloc report
-        uses: actions/upload-artifact@v4
+      - name: Post LOC report as PR comment
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: peter-evans/create-or-update-comment@v3
         with:
-          name: cloc-report
-          path: cloc-report.txt
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          header: "📊 Lines of Code Report (excluding JSON)"
+          body: |
+            ```markdown
+            ${{ steps.cloc.outputs.stdout }}
+            ```
