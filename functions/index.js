@@ -55,7 +55,7 @@ export const deleteStudentAccount = functions.https.onCall(async (req) => {
   const collections = ["student_info", "student_users", "student_choice"];
 
   await Promise.all(
-    collections.map(col => db.collection(col).doc(uid).delete())
+    collections.map(col => db.collection(col).doc(req.data.uid).delete())
   );
 
   await fbAdmin.auth().deleteUser(req.data.uid);
