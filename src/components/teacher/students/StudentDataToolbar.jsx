@@ -49,7 +49,7 @@ const StyledTextField = styled(TextField)(({ theme, ownerState }) => ({
 }));
 
 export default function StudentDataToolbar() {
-  const { selectedUids, setNewStudentDialogOpen, setDeleteStudentsDialogOpen } = useStudentsManagement();
+  const { selectedUids, setNewStudentDialogOpen, setDeleteStudentsDialogOpen, setCsvUploadDialogOpen } = useStudentsManagement();
 
   const onClickNewStudent = () => {
     setNewStudentDialogOpen(true);
@@ -57,6 +57,10 @@ export default function StudentDataToolbar() {
 
   const onClickDeleteStudents = () => {
     if (selectedUids.length) setDeleteStudentsDialogOpen(true);
+  }
+
+  const onClickUploadCsv = () => {
+    setCsvUploadDialogOpen(true);
   }
 
   return (
@@ -68,7 +72,7 @@ export default function StudentDataToolbar() {
       </Tooltip>
 
       <Tooltip title="Upload CSV">
-        <IconButton>
+        <IconButton onClick={onClickUploadCsv}>
           <DocumentScannerIcon />
         </IconButton>
       </Tooltip>

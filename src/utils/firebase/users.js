@@ -121,6 +121,12 @@ export async function registerStudent({ fname, lname, email, oen }) {
   return result.data;
 }
 
+export async function bulkRegisterStudents({ students }) {
+  const fn = httpsCallable(functions, 'bulkCreateStudentAccounts');
+  const result = await fn({ students });
+  return result.data;
+}
+
 export async function deleteStudent({ uid }) {
   const fn = httpsCallable(functions, 'deleteStudentAccount');
   const result = await fn({ uid });

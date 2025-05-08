@@ -5,6 +5,8 @@ const StudentsManagementContext = createContext(null);
 export function StudentsManagementProvider({ children }) {
   const [selectedUids, setSelectedUids] = useState([]);
   const [newStudentDialogOpen, setNewStudentDialogOpen] = useState(false);
+  const [csvUploadDialogOpen, setCsvUploadDialogOpen] = useState(false);
+  const [csvStudents, setCsvStudents] = useState([]);
   const [deleteStudentsDialogOpen, setDeleteStudentsDialogOpen] = useState(false);
 
   return (
@@ -13,6 +15,8 @@ export function StudentsManagementProvider({ children }) {
         selectedUids, setSelectedUids,
         newStudentDialogOpen, setNewStudentDialogOpen,
         deleteStudentsDialogOpen, setDeleteStudentsDialogOpen,
+        csvUploadDialogOpen, setCsvUploadDialogOpen,
+        csvStudents, setCsvStudents
       }}
     >
       {children}

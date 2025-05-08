@@ -42,6 +42,55 @@ export const createStudentAccount = functions.https.onCall(async (req) => {
   }
 });
 
+export const bulkCreateStudentAccounts = functions.https.onCall(async (req) => {
+  if (!req.auth) {
+    throw new functions.https.HttpsError("unauthenticated", "You must be logged in.");
+  }
+
+  const { admin } = req.auth.token;
+  if (!admin) {
+    throw new functions.https.HttpsError("permission-denied", "Only admins can create student accounts.");
+  }
+
+  const { students } = req.data;
+  if (!Array.isArray(students) || students.length === 0) {
+    throw new functions.https.HttpsError("invalid-argument", "students must be a non-empty array.");
+  }
+
+  const db = fbAdmin.firestore();
+  const results = [];
+
+  for (const student of students) {
+    const { email, fname, lname, oen } = student;
+
+    if (!email || !fname || !lname || !oen) {
+      results.push({ email, success: false, error: "Missing required fields." });
+      continue;
+    }
+
+    try {
+      const userRecord = await fbAdmin.auth().createUser({ email, password: oen });
+      const uid = userRecord.uid;
+
+      await db.collection("student_info").doc(uid).set({ fname, lname });
+      await db.collection("student_users").doc(uid).set({ email, oen });
+      await db.collection("student_choice").doc(uid).set({ tableId: null, seatNumber: null });
+
+      results.push({ email, success: true, uid });
+    } catch (err) {
+      if (err.code === "auth/email-already-exists") {
+        results.push({ email, success: false, error: "Email already exists." });
+      } else if (err.code === "auth/invalid-email") {
+        results.push({ email, success: false, error: "Invalid email format." });
+      } else {
+        results.push({ email, success: false, error: err.message });
+      }
+    }
+  }
+
+  return { results };
+});
+
 export const deleteStudentAccount = functions.https.onCall(async (req) => {
   const callerUid = req.auth?.uid;
   if (!callerUid) throw new functions.https.HttpsError('unauthenticated');

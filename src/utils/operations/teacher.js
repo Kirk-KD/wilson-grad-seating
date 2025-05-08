@@ -93,3 +93,12 @@ export async function vacateStudentFromTheirSeat({ uid }) {
 
   return await vacateSeat(seatInfo);
 }
+
+export async function bulkRegisterStudents({ students }) {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Not authenticated');
+  const isTeacher = await users.isCurrentUserTeacher();
+  if (!isTeacher) throw new Error('Not a teacher');
+
+  return await users.bulkRegisterStudents({ students });
+}

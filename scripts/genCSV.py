@@ -17,7 +17,7 @@ def generate_students_csv(filename='sample/students_sample.csv', count=100):
     fake = Faker('en_CA')  # Canadian locale
     with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(['email', 'first_name', 'last_name', 'OEN'])
+        writer.writerow(['email', 'first_name', 'last_name', 'oen'])
         for _ in range(count):
             first = fake.first_name()
             last = fake.last_name()
