@@ -20,6 +20,10 @@ const theme = createTheme({
     warning: {
       main: '#ef6c00',
     },
+    landingbg: {
+      main: '#6e7ae8',
+      dark: '#473dc6',
+    }
   },
   typography: {
     ...baseTheme.typography,
