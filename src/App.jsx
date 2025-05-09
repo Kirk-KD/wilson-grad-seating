@@ -2,6 +2,7 @@ import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DashboardLayout from "./components/teacher/layout/DashboardLayout";
+import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 import StudentPage from "./pages/student/StudentPage";
@@ -19,7 +20,8 @@ export default function App() {
       <CssBaseline />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/student" element={<StudentPage />} />
           <Route path="/admin" element={<DashboardLayout />}>
             <Route index element={<Overview />} />
