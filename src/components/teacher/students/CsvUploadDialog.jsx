@@ -157,11 +157,11 @@ export default function CsvUploadDialog() {
           </div>
         ) }
 
-      </DialogContent>
-      <DialogActions>
-        <Typography variant="subtitle1" color="textSecondary" style={{ marginRight: 'auto' }}>
+        <Typography variant="subtitle1" color="textSecondary" marginTop={2}>
           Processing may take longer for a high number of students.
         </Typography>
+      </DialogContent>
+      <DialogActions>
         <LoadingButton
           busy={registering}
           onClick={handleRegisterAll}

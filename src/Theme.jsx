@@ -4,30 +4,27 @@ const baseTheme = createTheme();
 const theme = createTheme({
   ...baseTheme,
   palette: {
-    mode: 'light',
+    type: 'light',
     primary: {
-      main: '#ffb74d',
+      main: '#4752ec',
     },
     secondary: {
-      main: '#1976d2',
+      main: '#D23F3F',
     },
     success: {
-      main: '#43ad3a',
+      main: '#27926d',
+    },
+    background: {
+      default: '#f7f8ff',
+    },
+    warning: {
+      main: '#ef6c00',
     },
   },
   typography: {
     ...baseTheme.typography,
     fontFamily: "Roboto, Helvetica, Arial, sans-serif"
-  },
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          backgroundColor: 'rgb(250, 250, 250)',
-        },
-      },
-    },
-  },
+  }
 });
 
 export default theme;
