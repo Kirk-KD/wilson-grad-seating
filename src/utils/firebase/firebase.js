@@ -1,37 +1,3 @@
-/**
-
-READ BY ANYONE; WRITE BY ADMIN
-student_info (collection):
-  <uid> (document):
-    fname
-    lname
-
-READ/WRITE BY ADMIN
-student_users (collection):
-  <uid> (document):
-    email
-    oen
-
-READ/CREATE BY ADMIN; DELETE BY SELF; NO UPDATES
-admin_users (collection):
-  <uid> (document):
-    email
-
-READ BY ANYONE; UPDATE BY SELF OR ADMIN; DELETION BY ADMIN
-student_choice (collection):
-  <uid> (document):
-    tableId = null
-    seatNumber = null
-
-READ BY ANYONE; WRITE BY MATCHED UID OR UID == NULL OR ADMIN
-tables (collection):
-  <tableId> (document):
-    seats (collection):
-      <seatNumber> (document):
-        uid = null
-
-*/
-
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from 'firebase/app';
 import {

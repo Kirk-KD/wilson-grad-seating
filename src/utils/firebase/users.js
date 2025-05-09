@@ -36,18 +36,6 @@ export function adminSubscribeToStudents(callback) {
     }
   );
 
-  const unsubInfos = onSnapshot(
-    collection(db, 'student_info'),
-    snapshot => {
-      snapshot.docChanges().forEach(change => {
-        const id = change.doc.id;
-        if (change.type === 'removed') delete infos[id];
-        else infos[id] = change.doc.data();
-      });
-      emit();
-    }
-  );
-
   const unsubChoices = onSnapshot(
     collection(db, 'student_choice'),
     snapshot => {
@@ -62,62 +50,17 @@ export function adminSubscribeToStudents(callback) {
 
   return () => {
     unsubUsers();
-    unsubInfos();
     unsubChoices();
   };
 }
 
 export function studentSubscribeToStudents(callback) {
-  const infos = {};
-  const choices = {};
-
-  function emit() {
-    const result = {};
-    const allUids = Object.keys(infos);
-
-    allUids.forEach(uid => {
-      result[uid] = {
-        ...infos[uid],
-        ...choices[uid]
-      };
-    });
-
-    callback(result);
-  }
-
-  const unsubInfos = onSnapshot(
-    collection(db, 'student_info'),
-    snapshot => {
-      snapshot.docChanges().forEach(change => {
-        const id = change.doc.id;
-        if (change.type === 'removed') delete infos[id];
-        else infos[id] = change.doc.data();
-      });
-      emit();
-    }
-  );
-
-  const unsubChoices = onSnapshot(
-    collection(db, 'student_choice'),
-    snapshot => {
-      snapshot.docChanges().forEach(change => {
-        const id = change.doc.id;
-        if (change.type === 'removed') delete choices[id];
-        else choices[id] = change.doc.data();
-      });
-      emit();
-    }
-  );
-
-  return () => {
-    unsubInfos();
-    unsubChoices();
-  };
+  return adminSubscribeToStudents(callback);
 }
 
-export async function registerStudent({ fname, lname, email, oen }) {
+export async function registerStudent({ email }) {
   const fn = httpsCallable(functions, 'createStudentAccount');
-  const result = await fn({ fname, lname, email, password: oen, isAdmin: false });
+  const result = await fn({ email, isAdmin: false });
   return result.data;
 }
 
@@ -181,12 +124,19 @@ export async function clearStudentSeatChoice({ uid }) {
 }
 
 export async function getStudentInfo({ uid }) {
-  const infoRef = doc(db, 'student_info', uid);
+  const infoRef = doc(db, 'student_users', uid);
   const docSnap = await getDoc(infoRef);
 
   if (!docSnap.exists()) throw new Error('Invalid student uid');
 
   const data = docSnap.data();
 
-  return { fname: data.fname, lname: data.lname };
+  return data;
+}
+
+export async function isInWhitelist({ email }) {
+  const whitelistRef = doc(db, 'whitelist', email);
+  const docSnap = await getDoc(whitelistRef);
+
+  return docSnap.exists();
 }

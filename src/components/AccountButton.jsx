@@ -62,7 +62,7 @@ export default function AccountButton() {
       </Box>
       <MenuItem onClick={() => {
         handleCloseProfileMenu();
-        if (user) auth.signOut();
+        try { if (user) auth.signOut(); } catch {} // swallow
         navigate("/");
       }}>Logout</MenuItem>
     </Menu>

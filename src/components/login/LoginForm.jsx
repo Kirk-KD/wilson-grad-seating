@@ -1,10 +1,12 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { GoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
 import LoginErrorAlert from "./LoginErrorAlert";
 import StyledFormBox from "./StyledFormBox";
 import WilsonLogo from "./WilsonLogo";
 
 export default function LoginForm({
+  onGoogleSignIn,
   title,
   passwordFieldLabel,
   onSubmit,
@@ -15,6 +17,10 @@ export default function LoginForm({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (Boolean(onGoogleSignIn)) {
+      onGoogleSignIn();
+      return;
+    }
     onSubmit({ email, credential });
   };
 
@@ -26,28 +32,45 @@ export default function LoginForm({
         {title}
       </Typography>
 
-      <Stack spacing={2} sx={{ mt: 2 }}>
-        <TextField
-          label="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          fullWidth
-        />
+      <Stack spacing={2} sx={{ mt: 2, display: "flex", flexGrow: 1 }}>
+        {
+          !Boolean(onGoogleSignIn) ?
+          <>
+            <TextField
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              fullWidth
+            />
 
-        <TextField
-          label={passwordFieldLabel}
-          type={"password"}
-          value={credential}
-          onChange={(e) => setCredential(e.target.value)}
-          required
-          fullWidth
-        />
+            <TextField
+              label={passwordFieldLabel}
+              type={"password"}
+              value={credential}
+              onChange={(e) => setCredential(e.target.value)}
+              required
+              fullWidth
+            />
 
-        <Button type="submit" variant="contained" fullWidth>
-          Login
-        </Button>
+            <Button type="submit" variant="contained" fullWidth>
+              Login
+            </Button>
+          </> :
+          <>
+            <Box sx={{ display: "flex", width: "100%", justifyContent: "center", alignItems: "center", flexGrow: 0.5 }}>
+              <GoogleLogin
+                width="300px"
+                shape="rectangular"
+                onError={() => {
+                  alert("Login failed. Please try again later.");
+                }}
+                onSuccess={onGoogleSignIn}
+              />
+            </Box>
+          </>
+        }
 
         {errorCode != null && <LoginErrorAlert errorCode={errorCode} />}
       </Stack>

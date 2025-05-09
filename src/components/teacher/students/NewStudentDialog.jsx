@@ -7,7 +7,7 @@ import {
   DialogTitle,
   TextField
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as teacher from "../../../utils/operations/teacher.js";
 import { useStudentsManagement } from '../../context/StudentsManagementContext';
 import LoadingButton from '../../LoadingButton.jsx';
@@ -15,20 +15,13 @@ import LoadingButton from '../../LoadingButton.jsx';
 export default function NewStudentDialog() {
   const { newStudentDialogOpen, setNewStudentDialogOpen } = useStudentsManagement();
 
-  const [fname, setFname] = useState('');
-  const [lname, setLname] = useState('');
   const [email, setEmail] = useState('');
-  const [oen, setOen] = useState('');
-
   const [busy, setBusy] = useState(false);
 
   // Reset fields when dialog opens
   useEffect(() => {
     if (newStudentDialogOpen) {
-      setFname('');
-      setLname('');
       setEmail('');
-      setOen('');
     }
   }, [newStudentDialogOpen]);
 
@@ -37,7 +30,7 @@ export default function NewStudentDialog() {
   const handleAdd = async () => {
     try {
       setBusy(true);
-      await teacher.registerStudent({ fname, lname, email, oen });
+      await teacher.registerStudent({ email });
       onClose();
     } catch (err) {
       // TODO add error popup if time allows
@@ -53,34 +46,17 @@ export default function NewStudentDialog() {
       <DialogContent>
         <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
           <TextField
-            label="First Name"
-            value={fname}
-            onChange={e => setFname(e.target.value)}
-          />
-          <TextField
-            label="Last Name"
-            value={lname}
-            onChange={e => setLname(e.target.value)}
-            fullWidth
-          />
-          <TextField
             label="Email"
             type="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
             fullWidth
           />
-          <TextField
-            label="OEN"
-            value={oen}
-            onChange={e => setOen(e.target.value)}
-            fullWidth
-          />
         </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={busy}>Cancel</Button>
-        <LoadingButton busy={busy} onClick={handleAdd} variant="contained" disabled={!fname || !lname || !email || !oen || busy}>
+        <LoadingButton busy={busy} onClick={handleAdd} variant="contained" disabled={!email || busy}>
           Add
         </LoadingButton>
       </DialogActions>

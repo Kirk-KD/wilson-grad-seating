@@ -1,27 +1,29 @@
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../utils/firebase/firebase.js";
+import { isInWhitelist } from '../../utils/firebase/users.js';
 import LoginForm from "./LoginForm";
 
 export default function StudentLogin() {
   const navigate = useNavigate();
   const [errorCode, setErrorCode] = useState(null);
+  const auth = getAuth();
 
-  const handleLogin = async ({ email, credential: oen }) => {
+  const handleLogin = async (credentialResponse) => {
     setErrorCode(null);
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, oen);
+      const firebaseCredential = GoogleAuthProvider.credential(credentialResponse.credential);
+
+      const userCredential = await signInWithCredential(auth, firebaseCredential);
       const user = userCredential.user;
-      const token = await user.getIdTokenResult();
       
-      if (token.claims.admin) {
-        await signOut(auth);
-        setErrorCode("is-teacher");
-      } else {
+      if (await isInWhitelist({ email: user.email })) {
         navigate("/student");
+      } else {
+        setErrorCode("not-whitelisted");
       }
     } catch (err) {
+      console.error("Login error", err);
       setErrorCode(err.code);
     }
   };
@@ -29,9 +31,9 @@ export default function StudentLogin() {
   return (
     <LoginForm
       title="Wilson Grad Social"
-      passwordFieldLabel="OEN"
-      onSubmit={handleLogin}
+      onSubmit={() => {}}
       errorCode={errorCode}
+      onGoogleSignIn={handleLogin}
     />
   );
 }

@@ -11,6 +11,8 @@ export default function LoginErrorAlert({ errorCode }) {
         return "Please use the student sign-in.";
       case "is-teacher":
         return "Please use the teacher sign-in.";
+      case "not-whitelisted":
+        return "You are not in the whitelist. Please contact a teacher.";
       default:
         return "An unknown error occurred: " + errorCode;
     }
