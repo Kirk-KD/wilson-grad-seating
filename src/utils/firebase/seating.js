@@ -22,6 +22,16 @@ export function subscribeToTables(callback) {
   });
 }
 
+export function subscribeToSettings(callback) {
+  return onSnapshot(collection(db, 'settings'), snapshot => {
+    const result = {};
+    snapshot.docs.forEach(docSnap => {
+      result[docSnap.id] = docSnap.data();
+    });
+    callback(result);
+  });
+}
+
 export async function assignSeat({ tableId, seatNumber, uid }) {
   const tableRef = doc(db, 'tables', tableId);
   await updateDoc(tableRef, { [`seats.${seatNumber}`]: uid });
@@ -42,4 +52,14 @@ export async function getSeatOccupant({ tableId, seatNumber }) {
 
 export function isValidSeat({ tableId, seatNumber }) {
   return validTableIds.includes(tableId) && validSeatNumbers.includes(seatNumber);
+}
+
+export async function setDeadline(datetime) {
+  const deadlineRef = doc(db, 'settings', 'deadline');
+  await updateDoc(deadlineRef, { value: datetime });
+}
+
+export async function setAllowBook(allow) {
+  const allowBookRef = doc(db, 'settings', 'allowBook');
+  await updateDoc(allowBookRef, { value: allow });
 }

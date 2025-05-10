@@ -7,7 +7,6 @@ import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 import StudentPage from "./pages/student/StudentPage";
 import Seating from "./pages/teacher/Seating";
-import Settings from "./pages/teacher/Settings";
 import Students from "./pages/teacher/Students";
 import Teachers from "./pages/teacher/Teachers";
 import theme from "./Theme";
@@ -25,7 +24,6 @@ export default function App() {
             <Route index element={<Seating />} />
             <Route path="students" element={<Students />} />
             <Route path="teachers" element={<Teachers />} />
-            <Route path="settings" element={<Settings />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

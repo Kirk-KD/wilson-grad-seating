@@ -10,9 +10,7 @@ export default function DashboardLayout() {
       <Box>
         <TopAppBar />
         <TopNavBar />
-        {/* <Container> */}
-          <Outlet />
-        {/* </Container> */}
+        <Outlet />
       </Box>
     </UserOnly>
   );

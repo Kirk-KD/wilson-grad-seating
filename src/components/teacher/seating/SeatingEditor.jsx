@@ -20,8 +20,6 @@ export default function SeatingEditor() {
     const seatNumber = searchParams.get('seatNumber');
 
     if (tableId !== null && seatNumber !== null) {
-      console.log(tableId, seatNumber);
-
       setSelectedTableId(tableId);
       setSelectedSeatNumber(seatNumber);
       setOpenTableDialog(true);
