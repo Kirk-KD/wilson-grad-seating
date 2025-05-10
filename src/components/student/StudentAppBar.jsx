@@ -8,8 +8,6 @@ export default function StudentAppBar() {
   const { user } = useAuth();
   const student = students[user.uid];
 
-  console.log("StudentAppBar", student);
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ boxShadow: 0 }}>
