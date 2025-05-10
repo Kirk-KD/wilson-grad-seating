@@ -102,3 +102,12 @@ export async function bulkRegisterStudents({ students }) {
 
   return await users.bulkRegisterStudents({ students });
 }
+
+export async function setStudentAllowBook({ uid, allowBook }) {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Not authenticated');
+  const isTeacher = await users.isCurrentUserTeacher();
+  if (!isTeacher) throw new Error('Not a teacher');
+
+  return await users.setStudentAllowBook({ uid, allowBook });
+}

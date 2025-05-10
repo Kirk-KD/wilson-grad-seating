@@ -190,3 +190,8 @@ export async function getStudentInfo({ uid }) {
 
   return { fname: data.fname, lname: data.lname };
 }
+
+export async function setStudentAllowBook({ uid, allowBook }) {
+  const infoRef = doc(db, 'student_info', uid);
+  await updateDoc(infoRef, { allowBook });
+}

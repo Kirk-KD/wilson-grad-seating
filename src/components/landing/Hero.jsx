@@ -43,7 +43,6 @@ const Hero = forwardRef((props, ref) => {
           }} />
 
           <StyledNavButton color="inherit" variant="text" onClick={() => {
-            console.log("LOG IN");
             navigate("/login");
           }}>LOG IN</StyledNavButton>
           <StyledNavButton color="inherit" variant="text">FAQ</StyledNavButton>
