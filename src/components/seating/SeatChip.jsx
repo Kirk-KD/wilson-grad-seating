@@ -14,8 +14,17 @@ export default function SeatChip({ seatNumber, occupant, onClick }) {
   const occupied = occupant != null;
   const student = students[occupant];
 
-  const text = occupied ? `${student.fname.charAt(0).toUpperCase()}${student.lname.charAt(0).toUpperCase()}` : seatNumber;
-  const hover = occupied ? `${student.fname.charAt(0).toUpperCase() + student.fname.slice(1)} ${student.lname.charAt(0).toUpperCase() + student.lname.slice(1)}` : "Unoccupied";
+  const text = occupied 
+    ? (student.fname && student.lname 
+        ? `${student.fname.charAt(0).toUpperCase()}${student.lname.charAt(0).toUpperCase()}` 
+        : student.email.slice(0, 2).toUpperCase()) 
+    : seatNumber;
+
+  const hover = occupied 
+    ? (student.fname && student.lname 
+        ? `${student.fname.charAt(0).toUpperCase() + student.fname.slice(1)} ${student.lname.charAt(0).toUpperCase() + student.lname.slice(1)}` 
+        : student.email) 
+    : "Unoccupied";
 
   return (
     <Tooltip title={ hover }>

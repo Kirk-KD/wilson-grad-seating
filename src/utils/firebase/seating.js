@@ -22,9 +22,9 @@ export function subscribeToTables(callback) {
   });
 }
 
-export async function assignSeat({ tableId, seatNumber, uid }) {
+export async function assignSeat({ tableId, seatNumber, email }) {
   const tableRef = doc(db, 'tables', tableId);
-  await updateDoc(tableRef, { [`seats.${seatNumber}`]: uid });
+  await updateDoc(tableRef, { [`seats.${seatNumber}`]: email });
 }
 
 export async function vacateSeat({ tableId, seatNumber }) {

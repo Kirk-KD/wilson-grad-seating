@@ -11,38 +11,38 @@ import { auth } from "../firebase/firebase.js";
 import * as seating from "../firebase/seating.js";
 import * as users from "../firebase/users.js";
 
-export async function registerStudent({ fname, lname, email, oen }) {
+export async function registerStudent({ email }) {
   const user = auth.currentUser;
   if (!user) throw new Error('Not authenticated');
   const isTeacher = await users.isCurrentUserTeacher();
   if (!isTeacher) throw new Error('Not a teacher');
 
-  return await users.registerStudent({ fname, lname, email, oen });
+  return await users.registerStudent({ email });
 }
 
-export async function deleteStudent({ uid }) {
+export async function deleteStudent({ email }) {
   const user = auth.currentUser;
   if (!user) throw new Error('Not authenticated');
   const isTeacher = await users.isCurrentUserTeacher();
   if (!isTeacher) throw new Error('Not a teacher');
 
-  const seat = await users.getStudentSeatChoice({ uid });
+  const seat = await users.getStudentSeatChoice({ email });
   if (seat.tableId != null) await seating.vacateSeat(seat);
-  await users.deleteStudent({ uid });
+  await users.deleteStudent({ email });
 }
 
-export async function deleteStudentsBulk({ uids, emails }) {
+export async function deleteStudentsBulk({ emails }) {
   const user = auth.currentUser;
   if (!user) throw new Error('Not authenticated');
   const isTeacher = await users.isCurrentUserTeacher();
   if (!isTeacher) throw new Error('Not a teacher');
 
-  uids.forEach(async uid => {
-    const seat = await users.getStudentSeatChoice({ uid });
+  for (const email of emails) {
+    const seat = await users.getStudentSeatChoice({ email });
     if (seat.tableId != null) await seating.vacateSeat(seat);
-  });
+  }
 
-  return await users.deleteStudentsBulk({ uids, emails });
+  return await users.deleteStudentsBulk({ emails });
 }
 
 export async function registerTeacher({ email, password }) {
@@ -54,7 +54,7 @@ export async function registerTeacher({ email, password }) {
   return await users.registerTeacher({ email, password });
 }
 
-export async function assignStudentToSeat({ tableId, seatNumber, uid }) {
+export async function assignStudentToSeat({ tableId, seatNumber, email }) {
   const user = auth.currentUser;
   if (!user) throw new Error('Not authenticated');
   const isTeacher = await users.isCurrentUserTeacher();
@@ -63,9 +63,9 @@ export async function assignStudentToSeat({ tableId, seatNumber, uid }) {
   if (!valid) throw new Error('Invalid table/seat');
   const targetSeatOccupant = await seating.getSeatOccupant({ tableId, seatNumber });
   if (targetSeatOccupant != null) throw new Error('Seat is occupied');
-  
-  await seating.assignSeat({ tableId, seatNumber, uid });
-  await users.setStudentSeatChoice({ uid, tableId, seatNumber });
+
+  await seating.assignSeat({ tableId, seatNumber, email });
+  await users.setStudentSeatChoice({ email, tableId, seatNumber });
 }
 
 export async function vacateSeat({ tableId, seatNumber }) {
@@ -76,19 +76,19 @@ export async function vacateSeat({ tableId, seatNumber }) {
   const valid = seating.isValidSeat({ tableId, seatNumber });
   if (!valid) throw new Error('Invalid table/seat');
 
-  const seatOwnerUid = await seating.getSeatOccupant({ tableId, seatNumber });
+  const seatOwnerEmail = await seating.getSeatOccupant({ tableId, seatNumber });
 
   await seating.vacateSeat({ tableId, seatNumber });
-  if (seatOwnerUid != null) await users.clearStudentSeatChoice({ uid: seatOwnerUid })
+  if (seatOwnerEmail != null) await users.clearStudentSeatChoice({ email: seatOwnerEmail });
 }
 
-export async function vacateStudentFromTheirSeat({ uid }) {
+export async function vacateStudentFromTheirSeat({ email }) {
   const user = auth.currentUser;
   if (!user) throw new Error('Not authenticated');
   const isTeacher = await users.isCurrentUserTeacher();
   if (!isTeacher) throw new Error('Not a teacher');
 
-  const seatInfo = await users.getStudentSeatChoice({ uid });
+  const seatInfo = await users.getStudentSeatChoice({ email });
   if (seatInfo.seatNumber == null) return;
 
   return await vacateSeat(seatInfo);

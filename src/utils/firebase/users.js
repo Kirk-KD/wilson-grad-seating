@@ -8,9 +8,9 @@ export function subscribeToWhitelist(callback) {
   const unsub = onSnapshot(collection(db, 'whitelist'), snapshot => {
     const whitelist = {};
     snapshot.docChanges().forEach(change => {
-      const id = change.doc.id;
-      if (change.type === 'removed') delete whitelist[id];
-      else whitelist[id] = change.doc.data();
+      const email = change.doc.id;
+      if (change.type === 'removed') delete whitelist[email];
+      else whitelist[email] = change.doc.data();
     });
     callback(whitelist);
   });
@@ -21,19 +21,20 @@ export function subscribeToWhitelist(callback) {
 }
 
 export function adminSubscribeToStudents(callback) {
+  const whitelist = {};
   const users = {};
   const infos = {};
   const choices = {};
 
   function emit() {
     const result = {};
-    const allUids = Object.keys(users);
+    const allEmails = Object.keys(users);
 
-    allUids.forEach(uid => {
-      result[uid] = {
-        ...users[uid],
-        ...infos[uid],
-        ...choices[uid]
+    allEmails.forEach(email => {
+      result[email] = {
+        ...users[email],
+        ...infos[email],
+        ...choices[email]
       };
     });
 
@@ -44,9 +45,9 @@ export function adminSubscribeToStudents(callback) {
     collection(db, 'student_users'),
     snapshot => {
       snapshot.docChanges().forEach(change => {
-        const id = change.doc.id;
-        if (change.type === 'removed') delete users[id];
-        else users[id] = change.doc.data();
+        const email = change.doc.id;
+        if (change.type === 'removed') delete users[email];
+        else users[email] = change.doc.data();
       });
       emit();
     }
@@ -56,9 +57,21 @@ export function adminSubscribeToStudents(callback) {
     collection(db, 'student_choice'),
     snapshot => {
       snapshot.docChanges().forEach(change => {
-        const id = change.doc.id;
-        if (change.type === 'removed') delete choices[id];
-        else choices[id] = change.doc.data();
+        const email = change.doc.id;
+        if (change.type === 'removed') delete choices[email];
+        else choices[email] = change.doc.data();
+      });
+      emit();
+    }
+  );
+
+  const unsubWhitelist = onSnapshot(
+    collection(db, 'whitelist'),
+    snapshot => {
+      snapshot.docChanges().forEach(change => {
+        const email = change.doc.id;
+        if (change.type === 'removed') delete whitelist[email];
+        else whitelist[email] = change.doc.data();
       });
       emit();
     }
@@ -67,11 +80,20 @@ export function adminSubscribeToStudents(callback) {
   return () => {
     unsubUsers();
     unsubChoices();
+    unsubWhitelist();
   };
 }
 
 export function studentSubscribeToStudents(callback) {
   return adminSubscribeToStudents(callback);
+}
+
+export function setStudentName({ email, fname, lname }) {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Not authenticated');
+
+  const userRef = doc(db, 'student_users', email);
+  return updateDoc(userRef, { fname, lname });
 }
 
 export async function registerStudent({ email }) {
@@ -80,21 +102,21 @@ export async function registerStudent({ email }) {
   return result.data;
 }
 
-export async function bulkRegisterStudents({ students }) {
+export async function bulkRegisterStudents({ emails }) {
   const fn = httpsCallable(functions, 'bulkCreateStudentAccounts');
-  const result = await fn({ students });
+  const result = await fn({ emails });
   return result.data;
 }
 
-export async function deleteStudent({ uid }) {
+export async function deleteStudent({ email }) {
   const fn = httpsCallable(functions, 'deleteStudentAccount');
-  const result = await fn({ uid });
+  const result = await fn({ email });
   return result.data;
 }
 
-export async function deleteStudentsBulk({ uids, emails }) {
+export async function deleteStudentsBulk({ emails }) {
   const fn = httpsCallable(functions, 'deleteStudentsBulk');
-  const result = await fn({ uids, emails });
+  const result = await fn({ emails });
   return result.data;
 }
 
@@ -118,32 +140,32 @@ export async function isCurrentUserTeacher() {
   return !!res.claims.admin;
 }
 
-export async function getStudentSeatChoice({ uid }) {
-  const choiceRef = doc(db, 'student_choice', uid);
+export async function getStudentSeatChoice({ email }) {
+  const choiceRef = doc(db, 'student_choice', email);
   const docSnap = await getDoc(choiceRef);
 
-  if (!docSnap.exists()) throw new Error('Invalid student uid');
+  if (!docSnap.exists()) return { tableId: null, seatNumber: null };
   
   const data = docSnap.data();
 
   return { tableId: data.tableId, seatNumber: data.seatNumber };
 }
 
-export async function setStudentSeatChoice({ uid, tableId, seatNumber }) {
-  const choiceRef = doc(db, 'student_choice', uid);
+export async function setStudentSeatChoice({ email, tableId, seatNumber }) {
+  const choiceRef = doc(db, 'student_choice', email);
   await updateDoc(choiceRef, { tableId, seatNumber });
 }
 
-export async function clearStudentSeatChoice({ uid }) {
-  const choiceRef = doc(db, 'student_choice', uid);
+export async function clearStudentSeatChoice({ email }) {
+  const choiceRef = doc(db, 'student_choice', email);
   await updateDoc(choiceRef, { tableId: null, seatNumber: null });
 }
 
-export async function getStudentInfo({ uid }) {
-  const infoRef = doc(db, 'student_users', uid);
+export async function getStudentInfo({ email }) {
+  const infoRef = doc(db, 'student_users', email);
   const docSnap = await getDoc(infoRef);
 
-  if (!docSnap.exists()) throw new Error('Invalid student uid');
+  if (!docSnap.exists()) throw new Error('Invalid student email');
 
   const data = docSnap.data();
 

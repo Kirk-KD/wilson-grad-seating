@@ -20,7 +20,7 @@ export default function DeleteStudentsDialog() {
   const handleDelete = async () => {
     try {
       setBusy(true);
-      await deleteStudentsBulk({ uids: toBeDeleted.map(({ uid }) => uid).filter(uid => uid), emails: toBeDeleted.map(({ email }) => email) });
+      await deleteStudentsBulk({ emails: toBeDeleted.map(({ email }) => email) });
       setSelectedStudents([]);
       setDeleteStudentsDialogOpen(false);
     } catch (err) {
@@ -55,7 +55,7 @@ export default function DeleteStudentsDialog() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {toBeDeleted.map(({ uid, fname, lname, tableId, seatNumber, email }) => (
+              {toBeDeleted.map(({ fname, lname, tableId, seatNumber, email }) => (
                 <TableRow key={email} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">{`${lname ? lname : "--"}, ${fname ? fname : "--"}`}</TableCell>
                   <TableCell>{email}</TableCell>

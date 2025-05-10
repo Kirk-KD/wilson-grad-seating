@@ -18,11 +18,11 @@ export default function TableSeatsDisplay() {
       <Grid container spacing={2}>
         {
           selectedTableId != null &&
-          Object.entries(tables[selectedTableId].seats || {}).map(([seatNumber, uid]) => (
+          Object.entries(tables[selectedTableId].seats || {}).map(([seatNumber, email]) => (
             <Grid key={seatNumber}>
               <SeatChip
                 seatNumber={seatNumber} 
-                occupant={uid} 
+                occupant={email} 
                 onClick={() => setSelectedSeatNumber(seatNumber)}
               />
             </Grid>

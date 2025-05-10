@@ -18,7 +18,7 @@ export default function BookingConfirmationDialog() {
     setOpenBookConfirmationDialog(false);
   }
 
-  const student = students[user.uid];
+  const student = students[user.email];
   return (
     <Dialog open={openBookConfirmationDialog} onClose={handleClose}>
       <DialogTitle>Confirmation</DialogTitle>

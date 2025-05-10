@@ -7,35 +7,35 @@ fbAdmin.initializeApp();
 const db = fbAdmin.firestore();
 
 export const onUserCreate = functionsv1.auth.user().onCreate(async (user) => {
-  const email = user.email;
-  const fname = user.displayName?.split(" ")[0] || null;
-  const lname = user.displayName?.split(" ")[1] || null;
+  // const email = user.email;
+  // const fname = user.displayName?.split(" ")[0] || null;
+  // const lname = user.displayName?.split(" ")[1] || null;
 
-  if (!email) {
-    throw new Error("invalid-argument: Email is required.");
-  }
+  // if (!email) {
+  //   throw new Error("invalid-argument: Email is required.");
+  // }
 
-  // Check if the provider is Google
-  const provider = user.providerData?.[0]?.providerId;
-  if (provider !== "google.com") {
-    return;
-  }
+  // // Check if the provider is Google
+  // const provider = user.providerData?.[0]?.providerId;
+  // if (provider !== "google.com") {
+  //   return;
+  // }
 
-  const whitelistDoc = await db.collection("whitelist").doc(email).get();
+  // const whitelistDoc = await db.collection("whitelist").doc(email).get();
 
-  if (!whitelistDoc.exists) {
-    return;
-  }
+  // if (!whitelistDoc.exists) {
+  //   return;
+  // }
 
-  const batch = db.batch();
+  // const batch = db.batch();
 
-  const studentUserRef = db.collection("student_users").doc(user.uid);
-  batch.set(studentUserRef, { fname, lname, email, allowBooking: true });
+  // const studentUserRef = db.collection("student_users").doc(user.uid);
+  // batch.set(studentUserRef, { fname, lname, email, allowBooking: true });
 
-  const studentChoiceRef = db.collection("student_choice").doc(user.uid);
-  batch.set(studentChoiceRef, { tableId: null, seatNumber: null });
+  // const studentChoiceRef = db.collection("student_choice").doc(user.uid);
+  // batch.set(studentChoiceRef, { tableId: null, seatNumber: null });
 
-  await batch.commit();
+  // await batch.commit();
 });
 
 export const createStudentAccount = functionsv2.https.onCall(async (req) => {
@@ -57,7 +57,19 @@ export const createStudentAccount = functionsv2.https.onCall(async (req) => {
       await fbAdmin.auth().setCustomUserClaims(uid, { admin: true });
       await db.collection("admin_users").doc(uid).set({ email });
     } else {
+      // Add to whitelist
       await db.collection("whitelist").doc(email).set({ email });
+
+      // Populate student_users and student_choice collections
+      const batch = db.batch();
+
+      const studentUserRef = db.collection("student_users").doc(email);
+      batch.set(studentUserRef, { fname: null, lname: null, email, allowBooking: true });
+
+      const studentChoiceRef = db.collection("student_choice").doc(email);
+      batch.set(studentChoiceRef, { tableId: null, seatNumber: null });
+
+      await batch.commit();
     }
     return { success: true };
   } catch (err) {
@@ -92,7 +104,20 @@ export const bulkCreateStudentAccounts = functionsv2.https.onCall(async (req) =>
         continue;
       }
 
+      // Add to whitelist
       await docRef.set({ email });
+
+      // Populate student_users and student_choice collections
+      const batch = db.batch();
+
+      const studentUserRef = db.collection("student_users").doc(email);
+      batch.set(studentUserRef, { fname: null, lname: null, email, allowBooking: true });
+
+      const studentChoiceRef = db.collection("student_choice").doc(email);
+      batch.set(studentChoiceRef, { tableId: null, seatNumber: null });
+
+      await batch.commit();
+
       results.push({ email, success: true });
     } catch (err) {
       results.push({ email, success: false, error: err.message });
@@ -134,43 +159,21 @@ export const deleteStudentsBulk = functionsv2.https.onCall(async (req) => {
     throw new functionsv2.https.HttpsError('permission-denied', 'Not an admin');
   }
 
-  const { uids, emails } = req.data;
+  const { emails } = req.data;
 
-  const collections = ["student_users", "student_choice"];
+  const collections = ["whitelist", "student_users", "student_choice"];
   const results = [];
-
-  for (const uid of uids) {
-    try {
-      const user = await fbAdmin.auth().getUser(uid);
-
-      // Delete documents from collections
-      await Promise.all(
-        collections.map(col => db.collection(col).doc(uid).delete())
-      );
-
-      // Delete from whitelist
-      await db.collection("whitelist").doc(user.email).delete();
-
-      // Delete the user
-      await fbAdmin.auth().deleteUser(uid);
-
-      results.push({ uid, success: true });
-    } catch (err) {
-      results.push({ uid, success: false, error: err.message });
-    }
-  }
 
   for (const email of emails) {
     try {
-      const docRef = db.collection("whitelist").doc(email);
-      const doc = await docRef.get();
+      // delete from all collections
+      await Promise.all(
+        collections.map(col => db.collection(col).doc(email).delete())
+      );
+      // delete from auth
+      const user = await fbAdmin.auth().getUserByEmail(email);
+      if (user) await fbAdmin.auth().deleteUser(user.uid);
 
-      if (!doc.exists) {
-        results.push({ email, success: false, error: "Email not found in whitelist." });
-        continue;
-      }
-
-      await docRef.delete();
       results.push({ email, success: true });
     } catch (err) {
       results.push({ email, success: false, error: err.message });

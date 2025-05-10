@@ -1,7 +1,7 @@
 import { getAuth, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { isInWhitelist } from '../../utils/firebase/users.js';
+import { isInWhitelist, setStudentName } from '../../utils/firebase/users.js';
 import LoginForm from "./LoginForm";
 
 export default function StudentLogin() {
@@ -18,6 +18,8 @@ export default function StudentLogin() {
       const user = userCredential.user;
       
       if (await isInWhitelist({ email: user.email })) {
+        const [fname, lname] = user.displayName ? user.displayName.split(" ") : ["NO-NAME", "NO-NAME"];
+        await setStudentName({ email: user.email, fname, lname });
         navigate("/student");
       } else {
         setErrorCode("not-whitelisted");

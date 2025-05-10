@@ -8,7 +8,7 @@ export default function BookingCard() {
   const students = useStudentsContext();
   const { user, loading } = useAuth();
 
-  const student = students[user?.uid];
+  const student = students[user?.email];
 
   const theme = useTheme();
 

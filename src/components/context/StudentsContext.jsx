@@ -4,7 +4,7 @@ import { useStudents } from "../../hooks/useStudents";
 const StudentsContext = createContext(null);
 
 export function StudentsProvider({ children }) {
-  // uid: { email, fname, lname, seatNumber, tableId }
+  // email: { email, fname, lname, seatNumber, tableId, allowBooking }
   const students = useStudents();
   return (
     <StudentsContext.Provider value={students}>

@@ -16,14 +16,13 @@ service cloud.firestore {
       allow update: if false;
     }
 
-    match /student_users/{uid} {
-      allow read: if isAuth();
-      allow write: if isAdmin();
+    match /student_users/{email} {
+      allow read, write: if isAuth();
     }
 
-    match /student_choice/{uid} {
+    match /student_choice/{email} {
       allow read: if isAuth();
-      allow update: if isAdmin() || (isAuth() && request.auth.uid == uid);
+      allow update: if isAdmin() || (isAuth() && request.auth.token.email == email);
       allow create, delete: if isAdmin();
     }
 

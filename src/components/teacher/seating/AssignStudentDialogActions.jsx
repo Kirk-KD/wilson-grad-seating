@@ -23,7 +23,7 @@ export default function AssignStudentDialogActions() {
   const onClickAssign = async () => {
     try {
       setBusy(true);
-      await assignStudentToSeat({ tableId: selectedTableId, seatNumber: selectedSeatNumber, uid: selectedStudent.uid });
+      await assignStudentToSeat({ tableId: selectedTableId, seatNumber: selectedSeatNumber, email: selectedStudent.email });
       setSelectedStudent(null);
     } catch (err) {
       alert(err.message);

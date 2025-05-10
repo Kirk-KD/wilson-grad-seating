@@ -19,16 +19,16 @@ export async function getSeatOccupant({ tableId, seatNumber }) {
   return await seating.getSeatOccupant({ tableId, seatNumber });
 }
 
-export async function getStudentSeatChoice({ uid }) {
+export async function getStudentSeatChoice({ email }) {
   const user = auth.currentUser;
   if (!user) throw new Error('Not authenticated');
 
-  return await users.getStudentSeatChoice({ uid });
+  return await users.getStudentSeatChoice({ email });
 }
 
-export async function getStudentInfo({ uid }) {
+export async function getStudentInfo({ email }) {
   const user = auth.currentUser;
   if (!user) throw new Error('Not authenticated');
 
-  return await users.getStudentInfo({ uid });
+  return await users.getStudentInfo({ email });
 }
