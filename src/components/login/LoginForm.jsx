@@ -1,6 +1,6 @@
 import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { fetchSignInMethodsForEmail, sendSignInLinkToEmail } from "firebase/auth";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { auth } from "../../utils/firebase/firebase.js";
 import LoginErrorAlert from "./LoginErrorAlert";
 import StyledFormBox from "./StyledFormBox";
@@ -8,29 +8,48 @@ import WilsonLogo from "./WilsonLogo";
 
 const actionCodeSettings = {
   url: window.location.origin + "/finishLogin",
-  handleCodeInApp: true
+  handleCodeInApp: true,
 };
 
 export default function LoginForm({
   title,
   passwordFieldLabel,
   onSubmit,
-  errorCode
+  errorCode,
 }) {
   const [email, setEmail] = useState("");
   const [credential, setCredential] = useState("");
-
   const [useEmailLink, setUseEmailLink] = useState(true);
   const [msg, setMsg] = useState("");
+  const [cooldown, setCooldown] = useState(0);
+  const timerRef = useRef(null);
+
+  // start cooldown timer
+  const startCooldown = (seconds) => {
+    setCooldown(seconds);
+    timerRef.current = setInterval(() => {
+      setCooldown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timerRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  useEffect(() => {
+    return () => clearInterval(timerRef.current);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (useEmailLink) {
+      if (cooldown > 0) return;
       try {
         const methods = await fetchSignInMethodsForEmail(auth, email);
         if (methods.length === 0) {
-          console.log(methods);
           setMsg("No account found for that email. Please contact a teacher.");
           return;
         }
@@ -38,17 +57,18 @@ export default function LoginForm({
         await sendSignInLinkToEmail(auth, email, actionCodeSettings);
         window.localStorage.setItem("emailForSignIn", email);
         setMsg("Check your inbox for the sign-in link!");
+        startCooldown(60); // 60-second cooldown
       } catch (e) {
         setMsg("Error: " + e.message);
       }
+    } else {
+      onSubmit({ email, credential }); // OEN or password
     }
-    else onSubmit({ email, credential }); // OEN or password
   };
 
   return (
     <StyledFormBox component="form" onSubmit={handleSubmit}>
       <WilsonLogo />
-
       <Typography variant="h5" align="center">
         {title}
       </Typography>
@@ -63,18 +83,25 @@ export default function LoginForm({
           fullWidth
         />
 
-        {
-          useEmailLink ? 
+        {useEmailLink ? (
           <>
-            <Button type="submit" variant="contained" fullWidth>
-              Send login link
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              disabled={cooldown > 0}
+            >
+              {cooldown > 0 ? `Send again in ${cooldown}` : "Send login link"}
             </Button>
-            <Typography>{msg}</Typography>
-          </> : 
+            <Typography variant="body2" color="textSecondary">
+              {msg}
+            </Typography>
+          </>
+        ) : (
           <>
             <TextField
               label={passwordFieldLabel}
-              type={"password"}
+              type="password"
               value={credential}
               onChange={(e) => setCredential(e.target.value)}
               required
@@ -84,18 +111,30 @@ export default function LoginForm({
               Login
             </Button>
           </>
-        }
+        )}
 
-        <Divider><Typography color="textSecondary">or</Typography></Divider>
+        <Divider>
+          <Typography color="textSecondary">or</Typography>
+        </Divider>
 
-        {
-          useEmailLink ? <>
-            <Button variant="outlined" onClick={() => setUseEmailLink(false)}>Use {passwordFieldLabel}</Button>
-          </> : <>
-            <Button variant="outlined" onClick={() => setUseEmailLink(true)}>Use login link</Button>
-            <Typography variant="subtitle1" color="textSecondary" align="center">We will send a secure link to your inbox.</Typography>
+        {useEmailLink ? (
+          <Button variant="outlined" onClick={() => setUseEmailLink(false)}>
+            Use {passwordFieldLabel}
+          </Button>
+        ) : (
+          <>
+            <Button variant="outlined" onClick={() => setUseEmailLink(true)}>
+              Use login link
+            </Button>
+            <Typography
+              variant="subtitle1"
+              color="textSecondary"
+              align="center"
+            >
+              We will send a secure link to your inbox.
+            </Typography>
           </>
-        }
+        )}
 
         {errorCode != null && <LoginErrorAlert errorCode={errorCode} />}
       </Stack>
