@@ -1,5 +1,6 @@
 import { Button, DialogActions } from "@mui/material";
 import { useState } from "react";
+import * as student from "../../utils/operations/student.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useSeatingSelector } from "../context/SeatingSelectorContext";
 import { useSettingsContext } from "../context/SettingsContext.jsx";
@@ -20,10 +21,10 @@ export default function BookingConfirmationDialogActions() {
   const students = useStudentsContext();
   const { user, loading } = useAuth();
 
-  const student = students[user.uid];
+  const currentStudent = students[user.uid];
   const canBook = settings.allowBook !== undefined && settings.allowBook.value
     && settings.deadline !== undefined && new Date() <= settings.deadline.value.toDate()
-    && Boolean(student?.allowBook);
+    && Boolean(currentStudent?.allowBook);
 
   const handleClose = () => {
     setOpenBookConfirmationDialog(false);
