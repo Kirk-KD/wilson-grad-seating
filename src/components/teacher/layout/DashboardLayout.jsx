@@ -1,4 +1,4 @@
-import { Box, Container } from "@mui/system";
+import { Box } from "@mui/system";
 import { Outlet } from "react-router-dom";
 import UserOnly from "../../../pages/UserOnly";
 import TopAppBar from "./TopAppBar";
@@ -10,9 +10,9 @@ export default function DashboardLayout() {
       <Box>
         <TopAppBar />
         <TopNavBar />
-        <Container>
+        {/* <Container> */}
           <Outlet />
-        </Container>
+        {/* </Container> */}
       </Box>
     </UserOnly>
   );

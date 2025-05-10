@@ -5,7 +5,13 @@ const SeatingSelectorContext = createContext(null);
 export function SeatingSelectorProvider({ children }) {
   const [selectedTableId, setSelectedTableId] = useState(null);
   const [selectedSeatNumber, setSelectedSeatNumber] = useState(null);
-  const [openTableDialog, setOpenTableDialog] = useState(false);
+  const [openTableDialog, _setOpenTableDialog] = useState(false);
+  const [dialogAnchor, setDialogAnchor] = useState(null); 
+
+  function setOpenTableDialog(open, anchor = null) {
+    _setOpenTableDialog(open);
+    setDialogAnchor(anchor);
+  }
 
   return (
     <SeatingSelectorContext.Provider
@@ -15,7 +21,8 @@ export function SeatingSelectorProvider({ children }) {
         selectedSeatNumber,
         setSelectedSeatNumber,
         openTableDialog, 
-        setOpenTableDialog
+        setOpenTableDialog,
+        dialogAnchor, setDialogAnchor
       }}
     >
       {children}

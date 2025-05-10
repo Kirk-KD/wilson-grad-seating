@@ -11,7 +11,7 @@ const StyledSeatingDisplayBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "flex-start",
+    alignItems: "stretch",
   },
 
   overflow: "auto",

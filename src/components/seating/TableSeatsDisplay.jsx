@@ -14,8 +14,18 @@ export default function TableSeatsDisplay() {
   } = useSeatingSelector();
 
   return (
-    <Box>
-      <Grid container spacing={2}>
+    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+      <Grid
+        container
+        spacing={2}
+        justifyContent="center"
+        alignItems="center"
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(5, 1fr)",
+          gap: (theme) => theme.spacing(2),
+        }}
+      >
         {
           selectedTableId != null &&
           Object.entries(tables[selectedTableId].seats || {}).map(([seatNumber, uid]) => (

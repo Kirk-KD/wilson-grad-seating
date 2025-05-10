@@ -4,13 +4,16 @@ import { styled } from "@mui/system";
 const StyledSeatChipButton = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'bgColor' && prop !== 'hoverColor',
 })(({ theme, bgColor, hoverColor }) => ({
-  width: "2.5rem",
+  width: "4vw",
   padding: 0,
   aspectRatio: "1 / 1",
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: "30%",
   backgroundColor: bgColor || theme.palette.grey[200],
   "&:hover": {
     backgroundColor: hoverColor || theme.palette.grey[300],
+  },
+  [theme.breakpoints.down("md")]: {
+    width: "10vw", // Adjust width for smaller screens
   },
 }));
 

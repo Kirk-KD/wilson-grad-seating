@@ -27,6 +27,8 @@ export default function SeatingDisplay({ renderTable, sx }) {
             xs: 'mixed',
             md: 'upright'
           },
+          alignSelf: 'stretch',
+          // height: '100%',
         }}>Dance Floor & DJ</Typography>
       </StyledSeparatorBox>
 

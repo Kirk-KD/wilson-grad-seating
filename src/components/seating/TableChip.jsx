@@ -14,9 +14,14 @@ export default function TableChip({ tableId, onClick }) {
   const isAvailable = occupied < 10;
 
   return (
-    <Badge color="secondary" badgeContent={occupied}>
+    <Badge color="secondary" badgeContent={occupied} sx={{
+      "& .MuiBadge-badge": {
+        top: 4,
+        right: 4,
+      },
+    }}>
       <StyledTableChipButton
-        onClick={() => onClick(tableId)}
+        onClick={(e) => onClick(tableId, e)}
         bgColor={isAvailable ? alpha(theme.palette.success.main, 0.5) : theme.palette.grey[200]}
         hoverColor={isAvailable ? alpha(theme.palette.success.light, 0.5) : theme.palette.grey[300]}
       >

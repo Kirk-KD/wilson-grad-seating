@@ -1,3 +1,4 @@
+import { Container } from "@mui/material";
 import { StudentsProvider } from "../../components/context/StudentsContext";
 import { StudentsManagementProvider } from "../../components/context/StudentsManagementContext";
 import CsvUploadDialog from "../../components/teacher/students/CsvUploadDialog";
@@ -9,10 +10,12 @@ export default function Students() {
   return (
     <StudentsManagementProvider>
       <StudentsProvider>
-        <CsvUploadDialog />
-        <DeleteStudentsDialog />
-        <NewStudentDialog />
-        <StudentsTable />
+        <Container>
+          <CsvUploadDialog />
+          <DeleteStudentsDialog />
+          <NewStudentDialog />
+          <StudentsTable />
+        </Container>
       </StudentsProvider>
     </StudentsManagementProvider>
   );

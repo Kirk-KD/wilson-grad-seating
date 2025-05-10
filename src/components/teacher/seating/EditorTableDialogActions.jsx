@@ -40,7 +40,7 @@ export default function EditorTableDialogActions() {
   };
 
   const onClickClose = () => {
-    setSelectedTableId(null);
+    // setSelectedTableId(null);
     setSelectedSeatNumber(null);
     setOpenTableDialog(false);
   }

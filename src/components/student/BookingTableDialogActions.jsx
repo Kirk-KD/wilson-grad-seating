@@ -23,7 +23,7 @@ export default function BookingTableDialogActions() {
   }
 
   const onClickClose = () => {
-    setSelectedTableId(null);
+    // setSelectedTableId(null);
     setSelectedSeatNumber(null);
     setOpenTableDialog(false);
   }
