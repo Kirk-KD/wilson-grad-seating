@@ -49,14 +49,14 @@ const StyledTextField = styled(TextField)(({ theme, ownerState }) => ({
 }));
 
 export default function StudentDataToolbar() {
-  const { selectedUids, setNewStudentDialogOpen, setDeleteStudentsDialogOpen, setCsvUploadDialogOpen } = useStudentsManagement();
+  const { selectedStudents, setNewStudentDialogOpen, setDeleteStudentsDialogOpen, setCsvUploadDialogOpen } = useStudentsManagement();
 
   const onClickNewStudent = () => {
     setNewStudentDialogOpen(true);
   }
 
   const onClickDeleteStudents = () => {
-    if (selectedUids.length) setDeleteStudentsDialogOpen(true);
+    if (selectedStudents.length) setDeleteStudentsDialogOpen(true);
   }
 
   const onClickUploadCsv = () => {
@@ -82,9 +82,9 @@ export default function StudentDataToolbar() {
       <Tooltip title="Delete">
         {/* span: show tooltip even when disabled */}
         <span>
-          <IconButton disabled={selectedUids.length === 0} onClick={onClickDeleteStudents}>
+          <IconButton disabled={selectedStudents.length === 0} onClick={onClickDeleteStudents}>
             {
-              selectedUids.length <= 1 ?
+              selectedStudents.length <= 1 ?
               <DeleteIcon /> : 
               <DeleteSweepIcon />
             }

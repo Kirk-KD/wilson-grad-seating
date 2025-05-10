@@ -8,6 +8,8 @@ const db = fbAdmin.firestore();
 
 export const onUserCreate = functionsv1.auth.user().onCreate(async (user) => {
   const email = user.email;
+  const fname = user.displayName?.split(" ")[0] || null;
+  const lname = user.displayName?.split(" ")[1] || null;
 
   if (!email) {
     throw new Error("invalid-argument: Email is required.");
@@ -28,7 +30,7 @@ export const onUserCreate = functionsv1.auth.user().onCreate(async (user) => {
   const batch = db.batch();
 
   const studentUserRef = db.collection("student_users").doc(user.uid);
-  batch.set(studentUserRef, { email, allowBooking: true });
+  batch.set(studentUserRef, { fname, lname, email, allowBooking: true });
 
   const studentChoiceRef = db.collection("student_choice").doc(user.uid);
   batch.set(studentChoiceRef, { tableId: null, seatNumber: null });
@@ -118,6 +120,8 @@ export const deleteStudentAccount = functionsv2.https.onCall(async (req) => {
   );
   await db.collection("whitelist").doc(user.email).delete();
 
+  if (req.data.email) await db.collection("whitelist").doc(req.data.email).delete();
+
   await fbAdmin.auth().deleteUser(req.data.uid);
 });
 
@@ -130,10 +134,7 @@ export const deleteStudentsBulk = functionsv2.https.onCall(async (req) => {
     throw new functionsv2.https.HttpsError('permission-denied', 'Not an admin');
   }
 
-  const { uids } = req.data;
-  if (!Array.isArray(uids) || uids.length === 0) {
-    throw new functionsv2.https.HttpsError('invalid-argument', 'uids must be a non-empty array');
-  }
+  const { uids, emails } = req.data;
 
   const collections = ["student_users", "student_choice"];
   const results = [];
@@ -156,6 +157,23 @@ export const deleteStudentsBulk = functionsv2.https.onCall(async (req) => {
       results.push({ uid, success: true });
     } catch (err) {
       results.push({ uid, success: false, error: err.message });
+    }
+  }
+
+  for (const email of emails) {
+    try {
+      const docRef = db.collection("whitelist").doc(email);
+      const doc = await docRef.get();
+
+      if (!doc.exists) {
+        results.push({ email, success: false, error: "Email not found in whitelist." });
+        continue;
+      }
+
+      await docRef.delete();
+      results.push({ email, success: true });
+    } catch (err) {
+      results.push({ email, success: false, error: err.message });
     }
   }
 

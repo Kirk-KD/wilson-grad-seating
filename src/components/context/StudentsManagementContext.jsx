@@ -1,22 +1,25 @@
 import { createContext, useContext, useState } from 'react';
+import { useWhitelist } from '../../hooks/useWhitelist';
 
 const StudentsManagementContext = createContext(null);
 
 export function StudentsManagementProvider({ children }) {
-  const [selectedUids, setSelectedUids] = useState([]);
+  const [selectedStudents, setSelectedStudents] = useState([]);
   const [newStudentDialogOpen, setNewStudentDialogOpen] = useState(false);
   const [csvUploadDialogOpen, setCsvUploadDialogOpen] = useState(false);
   const [csvStudents, setCsvStudents] = useState([]);
   const [deleteStudentsDialogOpen, setDeleteStudentsDialogOpen] = useState(false);
+  const whitelist = useWhitelist();
 
   return (
     <StudentsManagementContext.Provider
       value={{
-        selectedUids, setSelectedUids,
+        selectedStudents, setSelectedStudents,
         newStudentDialogOpen, setNewStudentDialogOpen,
         deleteStudentsDialogOpen, setDeleteStudentsDialogOpen,
         csvUploadDialogOpen, setCsvUploadDialogOpen,
-        csvStudents, setCsvStudents
+        csvStudents, setCsvStudents,
+        whitelist
       }}
     >
       {children}

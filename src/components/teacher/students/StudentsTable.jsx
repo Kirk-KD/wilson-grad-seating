@@ -6,18 +6,30 @@ import StudentDataToolbar from "./StudentDataToolbar";
 
 export default function StudentsTable() {
   const students = useStudentsContext();
-  const { setSelectedUids } = useStudentsManagement();
+  const { setSelectedStudents, whitelist } = useStudentsManagement();
 
-  if (students != null) {
-    const rows = Object.entries(students).map(([uid, data]) => ({ ...data, uid }));
+  if (Boolean(students) || Boolean(whitelist)) {
+    const emails = new Set([
+      ...Object.values(students).map(s => s.email),
+      ...Object.keys(whitelist)
+    ]);
+    const rows = Array.from(emails).map(email => {
+      const student = Object.values(students).find(s => s.email === email);
+      return {
+        email,
+        fname: student?.fname || null,
+        lname: student?.lname || null,
+        seatNumber: student?.seatNumber || null,
+        tableId: student?.tableId || null
+      };
+    });
+
     const columns = [
       { field: "fname", headerName: "First name", width: 160 },
       { field: "lname", headerName: "Last name", width: 160 },
       { field: "tableId", headerName: "Table #", width: 90, type: "number" },
       { field: "seatNumber", headerName: "Seat #", width: 90, type: "number" },
-      { field: "email", headerName: "Email", width: 300 },
-      { field: "oen", headerName: "OEN", width: 300 },
-      { field: "uid", headerName: "UID", width: 160 },
+      { field: "email", headerName: "Email", width: 300 }
     ];
 
     return (
@@ -27,14 +39,14 @@ export default function StudentsTable() {
         <DataGrid
           rows={rows}
           columns={columns}
-          getRowId={(row) => row.uid}
+          getRowId={(row) => row.email}
           initialState={{ pagination: { page: 0, pageSize: 10 } }}
           pageSizeOptions={[10, 25, 50, 100]}
           slots={{ toolbar: StudentDataToolbar }}
           showToolbar
           checkboxSelection
           onRowSelectionModelChange={(newSelection) => {
-            setSelectedUids(Array.from(newSelection.ids));
+            setSelectedStudents(Array.from(newSelection.ids).map(id => rows.find(row => row.email === id)));
           }}
           sx={{ border: 0 }}
         />

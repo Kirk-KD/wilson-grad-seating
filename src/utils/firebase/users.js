@@ -4,6 +4,22 @@ import { app, auth, db } from './firebase.js';
 
 const functions = getFunctions(app, "us-central1");
 
+export function subscribeToWhitelist(callback) {
+  const unsub = onSnapshot(collection(db, 'whitelist'), snapshot => {
+    const whitelist = {};
+    snapshot.docChanges().forEach(change => {
+      const id = change.doc.id;
+      if (change.type === 'removed') delete whitelist[id];
+      else whitelist[id] = change.doc.data();
+    });
+    callback(whitelist);
+  });
+
+  return () => {
+    unsub();
+  };
+}
+
 export function adminSubscribeToStudents(callback) {
   const users = {};
   const infos = {};
@@ -76,9 +92,9 @@ export async function deleteStudent({ uid }) {
   return result.data;
 }
 
-export async function deleteStudentsBulk({ uids }) {
+export async function deleteStudentsBulk({ uids, emails }) {
   const fn = httpsCallable(functions, 'deleteStudentsBulk');
-  const result = await fn({ uids });
+  const result = await fn({ uids, emails });
   return result.data;
 }
 

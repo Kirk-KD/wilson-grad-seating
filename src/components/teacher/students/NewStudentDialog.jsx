@@ -44,7 +44,11 @@ export default function NewStudentDialog() {
     <Dialog open={newStudentDialogOpen} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>Add New Student</DialogTitle>
       <DialogContent>
-        <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+        <Box
+          component="form"
+          sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}
+          onSubmit={(e) => e.preventDefault()} // Prevent form submission on Enter
+        >
           <TextField
             label="Email"
             type="email"
@@ -56,7 +60,7 @@ export default function NewStudentDialog() {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={busy}>Cancel</Button>
-        <LoadingButton busy={busy} onClick={handleAdd} variant="contained" disabled={!email || busy}>
+        <LoadingButton busy={busy} onClick={handleAdd} variant="contained" disabled={!email || busy}> 
           Add
         </LoadingButton>
       </DialogActions>

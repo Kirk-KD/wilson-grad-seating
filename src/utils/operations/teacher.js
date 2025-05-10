@@ -31,7 +31,7 @@ export async function deleteStudent({ uid }) {
   await users.deleteStudent({ uid });
 }
 
-export async function deleteStudentsBulk({ uids }) {
+export async function deleteStudentsBulk({ uids, emails }) {
   const user = auth.currentUser;
   if (!user) throw new Error('Not authenticated');
   const isTeacher = await users.isCurrentUserTeacher();
@@ -42,7 +42,7 @@ export async function deleteStudentsBulk({ uids }) {
     if (seat.tableId != null) await seating.vacateSeat(seat);
   });
 
-  return await users.deleteStudentsBulk({ uids });
+  return await users.deleteStudentsBulk({ uids, emails });
 }
 
 export async function registerTeacher({ email, password }) {

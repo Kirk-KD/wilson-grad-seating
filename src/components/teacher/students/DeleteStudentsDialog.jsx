@@ -6,11 +6,11 @@ import { useStudentsManagement } from "../../context/StudentsManagementContext";
 import LoadingButton from "../../LoadingButton.jsx";
 
 export default function DeleteStudentsDialog() {
-  const { deleteStudentsDialogOpen, setDeleteStudentsDialogOpen, selectedUids, setSelectedUids } = useStudentsManagement();
+  const { deleteStudentsDialogOpen, setDeleteStudentsDialogOpen, selectedStudents, setSelectedStudents } = useStudentsManagement();
   const [busy, setBusy] = useState(false);
   const students = useStudentsContext();
 
-  const toBeDeleted = selectedUids.map(uid => ({ ...students[uid], uid }));
+  const toBeDeleted = selectedStudents;
   const countBooked = toBeDeleted.filter(({ tableId }) => tableId != null).length;
 
   const handleClose = () => {
@@ -20,8 +20,8 @@ export default function DeleteStudentsDialog() {
   const handleDelete = async () => {
     try {
       setBusy(true);
-      await deleteStudentsBulk({ uids: selectedUids });
-      setSelectedUids([]);
+      await deleteStudentsBulk({ uids: toBeDeleted.map(({ uid }) => uid).filter(uid => uid), emails: toBeDeleted.map(({ email }) => email) });
+      setSelectedStudents([]);
       setDeleteStudentsDialogOpen(false);
     } catch (err) {
       alert(err.message);
@@ -34,7 +34,7 @@ export default function DeleteStudentsDialog() {
     <Dialog open={deleteStudentsDialogOpen} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>
         {
-          selectedUids.length > 1
+          selectedStudents.length > 1
           ? `Delete ${toBeDeleted.length} Students`
           : "Delete Student"
         }
@@ -56,10 +56,10 @@ export default function DeleteStudentsDialog() {
             </TableHead>
             <TableBody>
               {toBeDeleted.map(({ uid, fname, lname, tableId, seatNumber, email }) => (
-                <TableRow key={uid} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell component="th" scope="row">{`${lname}, ${fname}`}</TableCell>
+                <TableRow key={email} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell component="th" scope="row">{`${lname ? lname : "--"}, ${fname ? fname : "--"}`}</TableCell>
                   <TableCell>{email}</TableCell>
-                  <TableCell align="right">{tableId != null ? `Table ${tableId}, seat ${seatNumber}` : "-"}</TableCell>
+                  <TableCell align="right">{tableId != null ? `Table ${tableId}, seat ${seatNumber}` : "--"}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
