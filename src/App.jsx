@@ -1,5 +1,7 @@
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DashboardLayout from "./components/teacher/layout/DashboardLayout";
 import FinishLoginPage from "./pages/FinishLoginPage";
@@ -11,8 +13,26 @@ import Seating from "./pages/teacher/Seating";
 import Students from "./pages/teacher/Students";
 import Teachers from "./pages/teacher/Teachers";
 import theme from "./Theme";
+import { auth } from "./utils/firebase/firebase.js";
+
+function useEnforceUserExists() {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) return;
+
+      user.reload().catch(err => {
+        if (err.code === 'auth/user-not-found') {
+          signOut(auth);
+        }
+      });
+    });
+    return unsubscribe;
+  }, []);
+}
 
 export default function App() {
+  useEnforceUserExists();
+  
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

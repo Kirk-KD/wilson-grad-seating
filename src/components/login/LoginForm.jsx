@@ -2,6 +2,7 @@ import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { fetchSignInMethodsForEmail, sendSignInLinkToEmail } from "firebase/auth";
 import { useEffect, useRef, useState } from "react";
 import { auth } from "../../utils/firebase/firebase.js";
+import LoadingButton from "../LoadingButton.jsx";
 import LoginErrorAlert from "./LoginErrorAlert";
 import StyledFormBox from "./StyledFormBox";
 import WilsonLogo from "./WilsonLogo";
@@ -62,9 +63,13 @@ export default function LoginForm({
         setMsg("Error: " + e.message);
       }
     } else {
-      onSubmit({ email, credential }); // OEN or password
+      setBusy(true);
+      await onSubmit({ email, credential }); // OEN or password
+      setBusy(false);
     }
   };
+
+  const [busy, setBusy] = useState(false);
 
   return (
     <StyledFormBox component="form" onSubmit={handleSubmit}>
@@ -107,9 +112,9 @@ export default function LoginForm({
               required
               fullWidth
             />
-            <Button type="submit" variant="contained" fullWidth>
+            <LoadingButton busy={busy} type="submit" variant="contained" fullWidth>
               Login
-            </Button>
+            </LoadingButton>
           </>
         )}
 
