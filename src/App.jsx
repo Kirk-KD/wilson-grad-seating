@@ -6,8 +6,6 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 import StudentPage from "./pages/student/StudentPage";
-import Audit from "./pages/teacher/Audit";
-import Overview from "./pages/teacher/Overview";
 import Seating from "./pages/teacher/Seating";
 import Settings from "./pages/teacher/Settings";
 import Students from "./pages/teacher/Students";
@@ -24,11 +22,9 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/student" element={<StudentPage />} />
           <Route path="/admin" element={<DashboardLayout />}>
-            <Route index element={<Overview />} />
-            <Route path="seating" element={<Seating />} />
+            <Route index element={<Seating />} />
             <Route path="students" element={<Students />} />
             <Route path="teachers" element={<Teachers />} />
-            <Route path="audit" element={<Audit />} />
             <Route path="settings" element={<Settings />} />
           </Route>
           <Route path="*" element={<NotFound />} />

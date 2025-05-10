@@ -30,11 +30,9 @@ export default function TopNavBar() {
         sx={{ px: { lg: 4, md: 2 } }}
       >
         {[
-          ["Overview", "/admin"],
-          ["Seating", "/admin/seating"],
+          ["Seating", "/admin"],
           ["Students", "/admin/students"],
           ["Teachers", "/admin/teachers"],
-          ["Audit", "/admin/audit"],
           ["Settings", "/admin/settings"],
         ].map(([label, path]) => (
           <StyledTab 
