@@ -6,7 +6,7 @@ export function SeatingSelectorProvider({ children }) {
   const [selectedTableId, setSelectedTableId] = useState(null);
   const [selectedSeatNumber, setSelectedSeatNumber] = useState(null);
   const [openTableDialog, _setOpenTableDialog] = useState(false);
-  const [dialogAnchor, setDialogAnchor] = useState(null); 
+  const [dialogAnchor, setDialogAnchor] = useState(null);
 
   function setOpenTableDialog(open, anchor = null) {
     _setOpenTableDialog(open);
@@ -22,7 +22,7 @@ export function SeatingSelectorProvider({ children }) {
         setSelectedSeatNumber,
         openTableDialog, 
         setOpenTableDialog,
-        dialogAnchor, setDialogAnchor
+        dialogAnchor, setDialogAnchor,
       }}
     >
       {children}

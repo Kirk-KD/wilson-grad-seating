@@ -13,6 +13,8 @@ export default function TableSeatsDisplay() {
     setSelectedSeatNumber,
   } = useSeatingSelector();
 
+  const table = tables[selectedTableId];
+
   return (
     <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
       <Grid
@@ -27,13 +29,22 @@ export default function TableSeatsDisplay() {
         }}
       >
         {
-          selectedTableId != null &&
-          Object.entries(tables[selectedTableId].seats || {}).map(([seatNumber, uid]) => (
+          Boolean(table) ?
+          Object.entries(table.seats || {}).map(([seatNumber, uid]) => (
             <Grid key={seatNumber}>
               <SeatChip
                 seatNumber={seatNumber} 
                 occupant={uid} 
                 onClick={() => setSelectedSeatNumber(seatNumber)}
+              />
+            </Grid>
+          )) :
+          [...Array(10)].map((_, index) => (
+            <Grid key={index}>
+              <SeatChip
+                seatNumber={index}
+                occupant={null}
+                onClick={() => {}}
               />
             </Grid>
           ))

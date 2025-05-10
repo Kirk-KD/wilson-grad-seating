@@ -1,14 +1,34 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSeatingSelector } from "../../context/SeatingSelectorContext";
 import SeatingDisplay from "../../seating/SeatingDisplay";
 import TableChip from "../../seating/TableChip";
 
 export default function SeatingEditor() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const {
     setSelectedTableId,
-    setOpenTableDialog
+    setSelectedSeatNumber,
+    setOpenTableDialog,
   } = useSeatingSelector();
+
+  useEffect(() => {
+    const tableId = searchParams.get('tableId');
+    const seatNumber = searchParams.get('seatNumber');
+
+    if (tableId !== null && seatNumber !== null) {
+      console.log(tableId, seatNumber);
+
+      setSelectedTableId(tableId);
+      setSelectedSeatNumber(seatNumber);
+      setOpenTableDialog(true);
+
+      navigate('/admin', { replace: true });
+    }
+  }, [searchParams]);
 
   return (
     <Box sx={{

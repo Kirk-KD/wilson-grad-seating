@@ -21,7 +21,7 @@ export default function EditorTableDialogActions() {
   const [busy, setBusy] = useState(false);
 
   const hasSelection = () => selectedTableId != null && selectedSeatNumber != null;
-  const hasOccupant = () => tables[selectedTableId].seats[selectedSeatNumber] != null;
+  const hasOccupant = () => tables[selectedTableId]?.seats[selectedSeatNumber] != null;
 
   const onClickAssign = async () => {
     setOpenAssignDialog(true);
@@ -40,7 +40,6 @@ export default function EditorTableDialogActions() {
   };
 
   const onClickClose = () => {
-    // setSelectedTableId(null);
     setSelectedSeatNumber(null);
     setOpenTableDialog(false);
   }

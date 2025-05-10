@@ -19,6 +19,8 @@ const popIn = keyframes`
 const AnimatedContainer = styled('div', {
   shouldForwardProp: (prop) => prop !== "delay",
 })(({ delay }) => ({
+  padding: 0,
+  margin: 0,
   transformOrigin: "center center",
   opacity: 0,
   transform: "scale(0)",
