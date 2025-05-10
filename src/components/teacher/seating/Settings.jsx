@@ -55,6 +55,7 @@ export function Settings() {
       <StyledBox>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateTimePicker
+            closeOnSelect="false"
             label="Deadline"
             value={value}
             onChange={async (newValue) => {
@@ -62,7 +63,7 @@ export function Settings() {
                 if (!newValue || !newValue.isValid()) return;
                 await setDeadline(Timestamp.fromDate(newValue.toDate()));
               } catch (err) {
-                alert("Failed to update deadline:", err);
+                alert("Failed to update deadline:", err.message);
               }
             }}
             renderInput={(params) => <TextField {...params} />}
@@ -82,7 +83,7 @@ export function Settings() {
           md: '50%'
         }
       }}>
-        Settings here take effect immedietly on all students. To toggle a single student's ability to choose their seat, <Link href='/admin/students'>go to students management</Link>.
+        These global settings apply immediately to all students and override individual student settings. To change seat selection permission for a specific student, <Link href='/admin/students'>go to students management</Link>.
       </Typography>
     </StyledSettingsContainer>
   );

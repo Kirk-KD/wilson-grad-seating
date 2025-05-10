@@ -1,4 +1,5 @@
 import { SeatingSelectorProvider } from "../../components/context/SeatingSelectorContext";
+import { SettingsProvider } from "../../components/context/SettingsContext";
 import { StudentsProvider } from "../../components/context/StudentsContext";
 import { StudentSeatBookingProvider } from "../../components/context/StudentSeatBookingContext";
 import { TablesProvider } from "../../components/context/TablesContext";
@@ -9,16 +10,18 @@ import UserOnly from "../UserOnly";
 export default function StudentPage() {
   return (
     <UserOnly admin={false}>
-      <SeatingSelectorProvider>
-        <StudentSeatBookingProvider>
-          <TablesProvider>
-            <StudentsProvider>
-              <StudentAppBar />
-              <StudentDashboard />
-            </StudentsProvider>
-          </TablesProvider>
-        </StudentSeatBookingProvider>
-      </SeatingSelectorProvider>
+      <SettingsProvider>
+        <SeatingSelectorProvider>
+          <StudentSeatBookingProvider>
+            <TablesProvider>
+              <StudentsProvider>
+                <StudentAppBar />
+                <StudentDashboard />
+              </StudentsProvider>
+            </TablesProvider>
+          </StudentSeatBookingProvider>
+        </SeatingSelectorProvider>
+      </SettingsProvider>
     </UserOnly>
   );
 }

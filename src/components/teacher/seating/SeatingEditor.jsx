@@ -43,8 +43,14 @@ export default function SeatingEditor() {
               // the tableId is the button's OWN tableID, not props drilling
               tableId={tableId}
               // open the dialog and set the currently active table ID
-              onClick={id => {
-                setOpenTableDialog(true);
+              onClick={(id, e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const anchor = { 
+                  x: rect.left + rect.width / 2,
+                  y: rect.top + rect.height / 2
+                };
+
+                setOpenTableDialog(true, anchor);
                 setSelectedTableId(id);
               }}
             />

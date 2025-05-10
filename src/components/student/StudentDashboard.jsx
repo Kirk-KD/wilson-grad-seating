@@ -1,6 +1,7 @@
 import { Alert, Box, Button, Typography } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 import { useSeatingSelector } from "../context/SeatingSelectorContext";
+import { useSettingsContext } from "../context/SettingsContext";
 import { useStudentsContext } from "../context/StudentsContext";
 import { useStudentSeatBooking } from "../context/StudentSeatBookingContext";
 import { useTablesContext } from "../context/TablesContext";
@@ -11,13 +12,17 @@ import BookingConfirmationDialog from "./BookingConfirmationDialog";
 import BookingTableDialog from "./BookingTableDialog";
 
 export default function StudentDashboard() {
-  const students = useStudentsContext();
   const tables = useTablesContext();
   const { setSelectedTableId, setOpenTableDialog } = useSeatingSelector();
   const { setOpenBookingCardDialog } = useStudentSeatBooking();
   const { user, loading } = useAuth();
 
+  const settings = useSettingsContext();
+  const students = useStudentsContext();
   const student = students[user.uid];
+  const canBook = settings.allowBook !== undefined && settings.allowBook.value
+    && settings.deadline !== undefined && new Date() <= settings.deadline.value.toDate()
+    && Boolean(student?.allowBook);
 
   return (
     <>
@@ -25,7 +30,7 @@ export default function StudentDashboard() {
       <BookingConfirmationDialog />
       <BookingCardDialog />
       {
-        !Boolean(student?.allowBook) && (
+        !canBook && (
           <Alert severity="warning" sx={{ width: "100%" }}>
             You are not allowed to book or change your seat at this time.
           </Alert>
@@ -35,14 +40,13 @@ export default function StudentDashboard() {
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "row", marginBottom: 2 }}>
           <Button variant="contained" color="primary" onClick={() => setOpenBookingCardDialog(true)}>View Seat</Button>
         </Box>
-        <SeatingDisplay 
-          sx={{ marginX: "auto" }}
+        <SeatingDisplay
           renderTable={
             tableId => (
               <TableChip
                 tableId={tableId}
                 onClick={(id, e) => {
-                  if (!Boolean(student?.allowBook)) return;
+                  if (!canBook) return;
 
                   const table = tables[tableId];
                   const occupied = table
