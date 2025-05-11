@@ -12,6 +12,7 @@ import TableChip from "../seating/TableChip";
 import BookingCardDialog from "./BookingCardDialog";
 import BookingConfirmationDialog from "./BookingConfirmationDialog";
 import BookingTableDialog from "./BookingTableDialog";
+import CountdownTimer from './CountdownTimer';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.transparent,
@@ -37,14 +38,6 @@ export default function StudentDashboard() {
       <BookingConfirmationDialog />
       <BookingCardDialog />
 
-      {
-        !canBook && (
-          <Alert severity="warning" sx={{ width: "100%" }}>
-            You are not allowed to book or change your seat at this time.
-          </Alert>
-        )
-      }
-
       <Box sx={{ 
         display: "flex", 
         justifyContent: "center", 
@@ -59,27 +52,58 @@ export default function StudentDashboard() {
           alignItems: 'flex-start',
           gap: 2
         }}>
-          <StyledBox sx={{
+          <Box sx={{
             display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
+            flexDirection: {
+              xs: 'column',
+              md: 'row'
+            },
+            width: 'fit-content',
+            maxWidth: '80vw',
+            height: 'fit-content',
+            gap: 2,
+            flexWrap: 'wrap'
           }}>
-            {
-              student?.tableId !== null && student?.seatNumber !== null ?
-              <CheckCircleIcon sx={{ mr: 1, color: (theme) => theme.palette.primary.main }}/> :
-              <TableChartIcon sx={{ mr: 1, color: (theme) => theme.palette.primary.main }}/>
-            }
-            <Typography variant="h5" sx={{
-              fontSize: '1.4em',
-              color: (theme) => theme.palette.primary.main
+            <StyledBox sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
             }}>
-              {Boolean(student) ? (
-                student.tableId !== null && student.seatNumber !== null ?
-                `Table ${student.tableId}, Seat ${student.seatNumber}` :
-                'No reservation yet'
-              ) : 'Loading...'}
-            </Typography>
-          </StyledBox>
+              {
+                student?.tableId !== null && student?.seatNumber !== null ?
+                <CheckCircleIcon sx={{ mr: 1, color: (theme) => theme.palette.success.main }}/> :
+                <TableChartIcon sx={{ mr: 1, color: (theme) => theme.palette.primary.main }}/>
+              }
+              <Typography variant="h5" sx={{
+                fontSize: '1.4em',
+                color: (theme) => theme.palette.primary.main
+              }}>
+                {Boolean(student) ? (
+                  student.tableId !== null && student.seatNumber !== null ?
+                  `Table ${student.tableId}, Seat ${student.seatNumber}` :
+                  'No reservation yet'
+                ) : 'Loading...'}
+              </Typography>
+            </StyledBox>
+
+            <StyledBox>
+              {settings.deadline !== undefined && <CountdownTimer deadline={settings.deadline.value.toDate()} />}
+            </StyledBox>
+
+            {
+              !canBook && (
+                <Alert severity="warning" sx={{
+                  width: "fit-content",
+                  display: 'flex',
+                  alignItems: 'center',
+                  borderRadius: '20px',
+                  fontSize: '1.2em'
+                }}>
+                  Booking is closed at this time
+                </Alert>
+              )
+            }
+          </Box>
 
           <StyledBox sx={{
             width: 'fit-content',
