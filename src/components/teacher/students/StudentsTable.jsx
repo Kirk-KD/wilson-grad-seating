@@ -73,7 +73,7 @@ export default function StudentsTable() {
           onRowSelectionModelChange={(newSelection) => {
           setSelectedUids(Array.from(newSelection.ids));
           }}
-          sx={{ border: 0 }}
+          sx={{ border: 0, backgroundColor: (theme) => theme.palette.background.paper }}
         />
       </Paper>
     );

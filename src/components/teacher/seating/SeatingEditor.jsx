@@ -36,27 +36,34 @@ export default function SeatingEditor() {
       justifyContent: "center",
       padding: 2
     }}>
-      <SeatingDisplay 
-        renderTable={
-          tableId => (
-            <TableChip
-              // the tableId is the button's OWN tableID, not props drilling
-              tableId={tableId}
-              // open the dialog and set the currently active table ID
-              onClick={(id, e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const anchor = { 
-                  x: rect.left + rect.width / 2,
-                  y: rect.top + rect.height / 2
-                };
+      <Box sx={{
+        width: 'fit-content',
+        height: 'fit-content',
+        borderRadius: '20px',
+        backgroundColor: (theme) => theme.palette.background.paper
+      }}>
+        <SeatingDisplay 
+          renderTable={
+            tableId => (
+              <TableChip
+                // the tableId is the button's OWN tableID, not props drilling
+                tableId={tableId}
+                // open the dialog and set the currently active table ID
+                onClick={(id, e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const anchor = { 
+                    x: rect.left + rect.width / 2,
+                    y: rect.top + rect.height / 2
+                  };
 
-                setOpenTableDialog(true, anchor);
-                setSelectedTableId(id);
-              }}
-            />
-          )
-        }
-      />
+                  setOpenTableDialog(true, anchor);
+                  setSelectedTableId(id);
+                }}
+              />
+            )
+          }
+        />
+      </Box>
       <Typography color="textSecondary" variant="subtitle1" align="center" width={"100%"}>Each button is a table. Click on one to see and manage individual seats.</Typography>
     </Box>
   );

@@ -23,7 +23,7 @@ export function Settings() {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   }));
 
   const StyledBox = styled(Box)(({ theme }) => ({
@@ -67,6 +67,11 @@ export function Settings() {
               }
             }}
             renderInput={(params) => <TextField {...params} />}
+            slotProps={{
+              field: {
+                readOnly: true
+              }
+            }}
           />
         </LocalizationProvider>
         <StyledSwitchContainer>
