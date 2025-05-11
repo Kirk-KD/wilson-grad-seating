@@ -6,13 +6,13 @@ const StyledSeparatorBox = styled(Box)(({ theme }) => ({
   display: "flex",
   alignSelf: "stretch",
   padding: 5,
-  backgroundImage: `repeating-linear-gradient(
-    45deg,
-    #fff,
-    #fff 10px,
-    rgba(0,0,0,0.05) 10px,
-    rgba(0,0,0,0.05) 20px
-  )`,
+  // backgroundImage: `repeating-linear-gradient(
+  //   45deg,
+  //   #fff,
+  //   #fff 10px,
+  //   rgba(0,0,0,0.05) 10px,
+  //   rgba(0,0,0,0.05) 20px
+  // )`,
   borderRadius: "5px",
 
   // vertical layout (xs–sm)

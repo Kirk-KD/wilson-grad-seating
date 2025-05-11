@@ -64,7 +64,7 @@ export default function LoginForm({
       }
     } else {
       setBusy(true);
-      await onSubmit({ email, credential }); // OEN or password
+      onSubmit({ email, credential }); // OEN or password
       setBusy(false);
     }
   };

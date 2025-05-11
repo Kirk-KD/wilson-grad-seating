@@ -19,7 +19,10 @@ export default function TopNavBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{
+      borderBottomLeftRadius: "10px",
+      borderBottomRightRadius: "10px",
+    }}>
       <Tabs 
         value={value} 
         onChange={handleChange} 

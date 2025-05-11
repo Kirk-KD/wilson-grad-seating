@@ -6,24 +6,29 @@ const theme = createTheme({
   palette: {
     type: 'light',
     primary: {
-      main: '#4752ec',
+      main: '#3f51b5',
+      light: '#7986cb',
+      dark: "#2c387e"
     },
     secondary: {
-      main: '#D23F3F',
+      main: '#e53935',
     },
     success: {
       main: '#27926d',
     },
     background: {
-      default: '#f7f8ff',
-    },
-    warning: {
-      main: '#ef6c00',
+      default: '#f5f5f5',
+      paper: '#ffffff'
     },
     landingbg: {
       main: '#6e7ae8',
       dark: '#473dc6',
-    }
+    },
+    text: {
+      primary:   "rgba(0,0,0,0.87)",
+      secondary: "rgba(0,0,0,0.6)",
+      disabled:  "rgba(0,0,0,0.38)"
+    },
   },
   typography: {
     ...baseTheme.typography,

@@ -10,7 +10,11 @@ export default function StudentAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ boxShadow: 0 }}>
+      <AppBar position="static" sx={{ 
+        boxShadow: 0, 
+        borderBottomLeftRadius: "10px",
+        borderBottomRightRadius: "10px", 
+      }}>
         <Toolbar sx={{
           gap: 1
         }}>

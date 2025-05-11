@@ -1,4 +1,4 @@
-import { alpha, Badge, Typography, useTheme } from "@mui/material";
+import { Badge, Typography, useTheme } from "@mui/material";
 import AnimatedContainer from "../AnimatedContainer";
 import { useTablesContext } from "../context/TablesContext";
 import StyledTableChipButton from "./StyledTableChipButton";
@@ -33,12 +33,12 @@ export default function TableChip({ tableId, onClick }) {
             onClick={(e) => onClick(tableId, e)}
             bgColor={
               isAvailable
-                ? alpha(theme.palette.success.main, 0.5)
+                ? theme.palette.primary.light
                 : theme.palette.grey[200]
             }
             hoverColor={
               isAvailable
-                ? alpha(theme.palette.success.light, 0.5)
+                ? theme.palette.primary.dark
                 : theme.palette.grey[300]
             }
           >
