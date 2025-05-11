@@ -21,6 +21,8 @@ export const createStudentAccount = functions.https.onCall(async (req) => {
     const userRecord = await fbAdmin.auth().createUser({ email, password });
     const uid = userRecord.uid;
 
+    await fbAdmin.auth().updateUser(uid, { emailVerified: true });
+
     if (isAdmin) {
       await fbAdmin.auth().setCustomUserClaims(uid, { admin: true });
       await db.collection("admin_users").doc(uid).set({ email });
@@ -71,6 +73,8 @@ export const bulkCreateStudentAccounts = functions.https.onCall(async (req) => {
     try {
       const userRecord = await fbAdmin.auth().createUser({ email, password: oen });
       const uid = userRecord.uid;
+
+      await fbAdmin.auth().updateUser(uid, { emailVerified: true });
 
       await db.collection("student_info").doc(uid).set({ fname, lname, allowBook: true });
       await db.collection("student_users").doc(uid).set({ email, oen });

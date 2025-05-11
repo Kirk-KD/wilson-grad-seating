@@ -16,6 +16,7 @@ const StyledTableChipButton = styled(IconButton, {
     color: textColor,
     "&:hover": {
       backgroundColor: hoverColor || theme.palette.grey[300],
+      color: theme.palette.getContrastText(hoverColor || theme.palette.grey[300]),
     },
     [theme.breakpoints.up("md")]: {
       width: "4.5vw",

@@ -14,7 +14,7 @@ export default function StudentAppBar() {
         boxShadow: 0, 
         borderBottomLeftRadius: "10px",
         borderBottomRightRadius: "10px",
-        backgroundColor: (theme) => theme.palette.background.paper,
+        backgroundColor: (theme) => theme.palette.background.transparent,
       }}>
         <Toolbar sx={{
           gap: 1
@@ -24,9 +24,8 @@ export default function StudentAppBar() {
             variant="h6"
             noWrap
             component="div"
-            color="#000"
           >
-            {Boolean(student) ? `Welcome, ${student.fname} ${student.lname}!` : "Student Dashboard"}
+            {Boolean(student) ? `Welcome, ${student.fname}!` : "Student Dashboard"}
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <AccountButton />

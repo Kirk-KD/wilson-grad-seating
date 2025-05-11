@@ -1,16 +1,14 @@
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { Button, IconButton, Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem } from "@mui/material";
 import { Box, useTheme } from '@mui/system';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../utils/firebase/firebase';
-import { useStudentSeatBooking } from './context/StudentSeatBookingContext';
 
 export default function AccountButton() {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { setOpenBookingCardDialog } = useStudentSeatBooking();
-
+  
   const handleOpenProfileMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -45,12 +43,6 @@ export default function AccountButton() {
         fontSize: "2rem"
       }} />
     </IconButton>
-    <Button sx={{
-      backgroundColor: (theme) => theme.palette.primary.dark,
-      color: '#fff'
-    }} onClick={() => setOpenBookingCardDialog(true)}>
-      My card
-    </Button>
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{

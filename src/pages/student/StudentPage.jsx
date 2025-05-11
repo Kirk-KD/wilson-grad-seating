@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { SeatingSelectorProvider } from "../../components/context/SeatingSelectorContext";
 import { SettingsProvider } from "../../components/context/SettingsContext";
 import { StudentsProvider } from "../../components/context/StudentsContext";
@@ -15,6 +16,23 @@ export default function StudentPage() {
           <StudentSeatBookingProvider>
             <TablesProvider>
               <StudentsProvider>
+                <Box
+                  sx={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    // backgroundImage: 'url(/images/login-background.svg)',
+                    backgroundImage: 'url(/images/banner.jpg)',
+                    filter: 'blur(10px)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    opacity: 0.6,
+                    zIndex: -10
+                  }}
+                ></Box>
                 <StudentAppBar />
                 <StudentDashboard />
               </StudentsProvider>

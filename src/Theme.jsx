@@ -18,7 +18,8 @@ const theme = createTheme({
     },
     background: {
       default: '#f5f5f5',
-      paper: '#ffffff'
+      paper: '#fff',
+      transparent: 'rgba(255, 255, 255, 0.6)'
     },
     landingbg: {
       main: '#6e7ae8',

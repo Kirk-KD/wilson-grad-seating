@@ -1,4 +1,7 @@
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import TableChartIcon from '@mui/icons-material/TableChart';
 import { Alert, Box, Typography } from "@mui/material";
+import { styled } from '@mui/system';
 import { useAuth } from "../context/AuthContext";
 import { useSeatingSelector } from "../context/SeatingSelectorContext";
 import { useSettingsContext } from "../context/SettingsContext";
@@ -9,6 +12,12 @@ import TableChip from "../seating/TableChip";
 import BookingCardDialog from "./BookingCardDialog";
 import BookingConfirmationDialog from "./BookingConfirmationDialog";
 import BookingTableDialog from "./BookingTableDialog";
+
+const StyledBox = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.background.transparent,
+  borderRadius: '20px',
+  padding: `clamp(10px, 1vw, ${theme.spacing(4)})`,
+}));
 
 export default function StudentDashboard() {
   const tables = useTablesContext();
@@ -23,10 +32,11 @@ export default function StudentDashboard() {
     && Boolean(student?.allowBook);
 
   return (
-    <Box position={"relative"} width={"100%"}>
+    <Box position={"relative"} width={"100%"} padding={2}>
       <BookingTableDialog />
       <BookingConfirmationDialog />
       <BookingCardDialog />
+
       {
         !canBook && (
           <Alert severity="warning" sx={{ width: "100%" }}>
@@ -43,59 +53,79 @@ export default function StudentDashboard() {
         paddingY: '4vh',
       }}>
         <Box sx={{
-          backgroundColor: (theme) => theme.palette.background.paper,
           width: 'fit-content',
-          height: 'fit-content',
-          borderRadius: '20px',
-          paddingX: '0.5vw',
-          paddingBottom: '0.5vw'
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          gap: 2
         }}>
-          <SeatingDisplay
-            renderTable={
-              tableId => (
-                <TableChip
-                  tableId={tableId}
-                  onClick={(id, e) => {
-                    if (!canBook) return;
-
-                    const table = tables[tableId];
-                    const occupied = table
-                      ? Object.values(table.seats || {}).filter(uid => uid != null).length
-                      : 0;
-                    if (occupied >= 10) return;
-
-                    setSelectedTableId(id);
-
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const anchor = { 
-                      x: rect.left + rect.width / 2,
-                      y: rect.top + rect.height / 2
-                    };
-
-                    setOpenTableDialog(true, anchor);
-                  }}
-                />
-              )
+          <StyledBox sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+            {
+              student?.tableId !== null && student?.seatNumber !== null ?
+              <CheckCircleIcon sx={{ mr: 1, color: (theme) => theme.palette.primary.main }}/> :
+              <TableChartIcon sx={{ mr: 1, color: (theme) => theme.palette.primary.main }}/>
             }
-          />
+            <Typography variant="h5" sx={{
+              fontSize: '1.4em',
+              color: (theme) => theme.palette.primary.main
+            }}>
+              {Boolean(student) ? (
+                student.tableId !== null && student.seatNumber !== null ?
+                `Table ${student.tableId}, Seat ${student.seatNumber}` :
+                'No reservation yet'
+              ) : 'Loading...'}
+            </Typography>
+          </StyledBox>
+
+          <StyledBox sx={{
+            width: 'fit-content',
+            height: 'fit-content',
+          }}>
+            <SeatingDisplay
+              renderTable={
+                tableId => (
+                  <TableChip
+                    tableId={tableId}
+                    onClick={(id, e) => {
+                      if (!canBook) return;
+
+                      const table = tables[tableId];
+                      const occupied = table
+                        ? Object.values(table.seats || {}).filter(uid => uid != null).length
+                        : 0;
+                      if (occupied >= 10) return;
+
+                      setSelectedTableId(id);
+
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      const anchor = { 
+                        x: rect.left + rect.width / 2,
+                        y: rect.top + rect.height / 2
+                      };
+
+                      setOpenTableDialog(true, anchor);
+                    }}
+                  />
+                )
+              }
+            />
+          </StyledBox>
+
+          <StyledBox sx={{ flex: 1 }}>
+            <Typography color="textSecondary" variant="subtitle1" align="left">
+              <ol>
+                <li>Each button is a table. Click on one to see individual seats and book or modify your reservation.</li>
+                <li>Your seat choice isn't final and may be moved by teachers if neccessary.</li>
+                <li>This display is not entirely indicative of the actual layout.</li>
+              </ol>
+            </Typography>
+          </StyledBox>
         </Box>
       </Box>
-
-      {/* <Alert severity="info" sx={{
-        width: '50%',
-        mx: 'auto'
-      }}> */}
-        <Typography color="textSecondary" variant="subtitle1" align="left" sx={{
-          width: '50%',
-          mx: 'auto'
-        }}>
-          <ol>
-            <li>Each button is a table. Click on one to see individual seats and book or modify your reservation.</li>
-            <li>Your seat choice isn't final and may be moved by teachers if neccessary.</li>
-            <li>This display is not entirely indicative of the actual layout.</li>
-          </ol>
-        </Typography>
-      {/* </Alert> */}
     </Box>
   )
 }

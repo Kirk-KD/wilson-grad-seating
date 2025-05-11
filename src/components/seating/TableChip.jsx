@@ -18,11 +18,12 @@ export default function TableChip({ tableId, onClick }) {
   const delay = numericId * 10;
 
   return (
-      <Badge 
-        color="secondary"
+      <Badge
         badgeContent={occupied}
         sx={{
           "& .MuiBadge-badge": {
+            backgroundColor: theme.palette.secondary.main,
+            color: '#fff',
             top: 4,
             right: 4,
           },
