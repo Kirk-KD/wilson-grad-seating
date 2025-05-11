@@ -1,59 +1,105 @@
-import { Skeleton, Typography } from "@mui/material";
-import { Box, useTheme } from "@mui/system";
+import CloseIcon from '@mui/icons-material/Close';
+import TableChartIcon from '@mui/icons-material/TableChart';
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Divider,
+  IconButton,
+  Typography
+} from "@mui/material";
+import { useTheme } from "@mui/system";
 import { useAuth } from "../context/AuthContext";
+import { useSeatingSelector } from '../context/SeatingSelectorContext';
 import { useStudentsContext } from "../context/StudentsContext";
-import StyledPaper from "./StyledPaper";
+import { useStudentSeatBooking } from '../context/StudentSeatBookingContext';
 
-export default function BookingCard() {
+export default function BookingCard({ onClose }) {
   const students = useStudentsContext();
   const { user, loading } = useAuth();
-
   const student = students[user?.uid];
-
   const theme = useTheme();
+  const { setSelectedTableId, setSelectedSeatNumber, setOpenTableDialog } = useSeatingSelector();
+  const { setOpenBookingCardDialog } = useStudentSeatBooking();
 
   return (
-    <StyledPaper elevation={1}>
-      {
-        Boolean(student) && !loading ?
+    <Card
+      elevation={2}
+      sx={{
+        width: '100%',
+        minWidth: '20rem',
+        height: '100%',
+        transition: 'box-shadow .3s',
+        '&:hover': { boxShadow: 6 },
+      }}
+    >
+      {Boolean(student) && !loading ? (
         <>
-          <Typography variant="h1" color="textSecondary">
-          {student.lname}, {student.fname}
-          </Typography>
-          
-          <Typography variant="subtitle1" color="textSecondary" marginLeft={1}>
-            {user.email}
-          </Typography>
-
-          <Box color={theme.palette.divider} borderBottom={1} width="100%" />
-
-          <br />
-
-          {
-            Boolean(student.tableId) ?
-            <>
-              <Typography variant="h4" color="success" marginTop={2}>
-                Table {student.tableId}, Seat {student.seatNumber}
+          <CardHeader
+            avatar={
+              <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
+                {student.fname[0]}
+              </Avatar>
+            }
+            action={
+              <IconButton aria-label="close" onClick={onClose}>
+                <CloseIcon />
+              </IconButton>
+            }
+            title={
+              <Typography variant="h5" fontWeight={500}>
+                {student.fname} {student.lname}
               </Typography>
-            </>
-            : <>
-              <Typography variant="h4" color="textSecondary" marginTop={2}>
+            }
+            subheader={
+              <Typography variant="subtitle2" color="textSecondary">
+                {user.email}
+              </Typography>
+            }
+          />
+
+          <Divider />
+
+          <CardContent>
+            {student.tableId ? (
+              <Box display="flex" alignItems="center" mb={2}>
+                <TableChartIcon color="primary" sx={{ mr: 1 }}/>
+                <Typography variant="h5" color="primary" >
+                  Table {student.tableId}, Seat {student.seatNumber}
+                </Typography>
+              </Box>
+            ) : (
+              <Typography variant="h5" color="textSecondary" mb={2}>
                 No reservation yet.
               </Typography>
-            </>
-          }
+            )}
 
-          <Box flexGrow={1} />
-
-          <Typography variant="subtitle2" color="textSecondary" marginTop={2}>Donald A. Wilson Grad Social 2025</Typography>
-        </> :
-        <Skeleton
-          variant="rectangular"
-          width={"100%"}
-          height={"100%"}
-          animation="wave"
-        />
-      }
-    </StyledPaper>
+            <Typography variant="body2" color="textSecondary" >
+              Donald A. Wilson Grad Social 2025
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button variant='text' onClick={() => {
+              setSelectedTableId(student.tableId);
+              setSelectedSeatNumber(student.seatNumber);
+              setOpenBookingCardDialog(false);
+              setOpenTableDialog(true);
+            }}>
+              Locate
+            </Button>
+          </CardActions>
+        </>
+      ) : (
+        <Box p={2}>
+          <Typography variant="body2" color="textSecondary">
+            Loading...
+          </Typography>
+        </Box>
+      )}
+    </Card>
   );
 }

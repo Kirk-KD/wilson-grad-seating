@@ -13,16 +13,18 @@ export default function StudentAppBar() {
       <AppBar position="static" sx={{ 
         boxShadow: 0, 
         borderBottomLeftRadius: "10px",
-        borderBottomRightRadius: "10px", 
+        borderBottomRightRadius: "10px",
+        backgroundColor: (theme) => theme.palette.background.paper,
       }}>
         <Toolbar sx={{
           gap: 1
         }}>
           <Typography
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, color: (theme) => theme.palette.primary.dark, fontFamily: "'Raleway Variable', sans-serif", fontWeight: 600, fontSize: '1.5em' }}
             variant="h6"
             noWrap
             component="div"
+            color="#000"
           >
             {Boolean(student) ? `Welcome, ${student.fname} ${student.lname}!` : "Student Dashboard"}
           </Typography>

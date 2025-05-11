@@ -1,5 +1,4 @@
-import CloseIcon from "@mui/icons-material/Close";
-import { Dialog, DialogTitle, IconButton, useMediaQuery, useTheme } from "@mui/material";
+import { Dialog, useMediaQuery, useTheme } from "@mui/material";
 import { useStudentSeatBooking } from "../context/StudentSeatBookingContext";
 import BookingCard from "./BookingCard";
 
@@ -14,23 +13,7 @@ export default function BookingCardDialog() {
       onClose={() => setOpenBookingCardDialog(false)}
       fullScreen={fullScreen}
     >
-      {fullScreen && (
-        <DialogTitle sx={{ m: 0, p: 1 }}>
-          <IconButton
-            aria-label="close"
-            onClick={() => setOpenBookingCardDialog(false)}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-      )}
-      <BookingCard />
+      <BookingCard onClose={() => setOpenBookingCardDialog(false)} />
     </Dialog>
   );
 }
