@@ -23,7 +23,7 @@ export default function StudentDashboard() {
     && Boolean(student?.allowBook);
 
   return (
-    <Box position={"relative"}>
+    <Box position={"relative"} width={"100%"}>
       <BookingTableDialog />
       <BookingConfirmationDialog />
       <BookingCardDialog />
@@ -34,25 +34,6 @@ export default function StudentDashboard() {
           </Alert>
         )
       }
-
-      {/* <Button
-        variant="contained"
-        sx={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          zIndex: 100,
-          borderTopLeftRadius: 0,
-          borderTopRightRadius: 0,
-          backgroundColor: (theme) => theme.palette.primary.main,
-          '&:hover': {
-            backgroundColor: (theme) => theme.palette.primary.dark,
-          },
-        }}
-        onClick={() => setOpenBookingCardDialog(true)}
-      >
-        View my seat
-      </Button> */}
 
       <Box sx={{ 
         display: "flex", 
@@ -100,13 +81,21 @@ export default function StudentDashboard() {
         </Box>
       </Box>
 
-      <Typography color="textSecondary" variant="subtitle1" align="left" width="50%" marginTop={2} marginX="auto">
-        Each button is a table. Click on one to see individual seats and book or modify your reservation.
-        <br />
-        Your seat choice isn't final and may be moved by teachers if neccessary.
-        <br />
-        This display is not entirely indicative of the actual layout.
-      </Typography>
+      {/* <Alert severity="info" sx={{
+        width: '50%',
+        mx: 'auto'
+      }}> */}
+        <Typography color="textSecondary" variant="subtitle1" align="left" sx={{
+          width: '50%',
+          mx: 'auto'
+        }}>
+          <ol>
+            <li>Each button is a table. Click on one to see individual seats and book or modify your reservation.</li>
+            <li>Your seat choice isn't final and may be moved by teachers if neccessary.</li>
+            <li>This display is not entirely indicative of the actual layout.</li>
+          </ol>
+        </Typography>
+      {/* </Alert> */}
     </Box>
   )
 }
