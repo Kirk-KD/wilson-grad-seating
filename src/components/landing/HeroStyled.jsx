@@ -1,4 +1,4 @@
-import { Box, Button, Toolbar, Typography } from '@mui/material';
+import { Box, Button, Stack, Toolbar, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export const StyledNavButton = styled(Button)(({ theme }) => ({
@@ -15,7 +15,6 @@ export const StyledTitleContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'row',
-  flexGrow: 1,
   width: '100%',
 }));
 
@@ -39,7 +38,7 @@ export const StyledTitle = styled((props) => <Typography variant="h1" {...props}
   ...sx,
 }));
 
-export const StyledHeroBox = styled(Box)(({ theme }) => ({
+export const StyledHeroBox = styled(Stack)(({ theme }) => ({
   backgroundImage: 'url("/images/banner.jpg")',
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
@@ -78,9 +77,16 @@ export const StyledTitleBox = styled(Box, {
 }));
 
 export const StyledScrollButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.common.white,
   borderRadius: '20px',
   fontFamily: "'Raleway Variable', sans-serif",
   fontWeight: 800,
-  color: theme.palette.common.white,
+  fontSize: '1.8em',
+  color: theme.palette.primary.main,
   borderColor: theme.palette.common.white,
+  transition: 'transform 0.15s ease-in-out',
+  transformOrigin: 'center center',
+  '&:hover': {
+    transform: 'scale(1.2)',
+  },
 }));

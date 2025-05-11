@@ -32,7 +32,7 @@ export default function StudentDashboard() {
     && Boolean(student?.allowBook);
 
   return (
-    <Box position={"relative"} width={"100%"} padding={2}>
+    <Box position={"relative"} width={"100%"} px={2} paddingBottom={2}>
       <BookingTableDialog />
       <BookingConfirmationDialog />
       <BookingCardDialog />

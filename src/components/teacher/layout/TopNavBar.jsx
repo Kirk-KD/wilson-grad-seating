@@ -35,8 +35,6 @@ export default function TopNavBar() {
         {[
           ["Seating", "/admin"],
           ["Students", "/admin/students"],
-          ["Teachers", "/admin/teachers"],
-          ["Settings", "/admin/settings"],
         ].map(([label, path]) => (
           <StyledTab 
             key={path} 
