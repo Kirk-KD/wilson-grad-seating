@@ -29,7 +29,7 @@ export default function SeatChip({ seatNumber, occupant, onClick }) {
           bgColor={ selectedSeatNumber == seatNumber ? theme.palette.secondary.light : (occupied ? theme.palette.grey[200] : theme.palette.primary.light) }
           hoverColor={ selectedSeatNumber == seatNumber ? theme.palette.secondary.dark : (occupied ? theme.palette.grey[300] : theme.palette.primary.dark) }
         >
-          <Typography variant="h6" fontSize={"1.2em"}>{ text }</Typography>
+          <Typography variant="h6" fontSize={"1.2em"} fontFamily={"'Cal Sans', sans-serif"}>{ text }</Typography>
         </StyledSeatChipButton>
       </AnimatedContainer>
     </Tooltip>

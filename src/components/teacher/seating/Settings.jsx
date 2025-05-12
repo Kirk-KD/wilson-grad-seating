@@ -7,6 +7,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { Timestamp } from 'firebase/firestore';
+import { Link } from 'react-router-dom';
 import { setAllowBook, setDeadline } from '../../../utils/firebase/seating.js';
 import { useSettingsContext } from '../../context/SettingsContext';
 import StyledBox from '../StyledBox.jsx';
@@ -31,7 +32,7 @@ export function Settings() {
     display: 'flex',
     flexDirection: {
       xs: 'column',
-      sm: 'row'
+      md: 'row'
     },
     gap: 2,
   }}>
@@ -39,7 +40,10 @@ export function Settings() {
       display: 'flex',
       flexDirection: 'row',
       minHeight: 'fit-content',
-      maxWidth: '65%',
+      maxWidth: {
+        xs: '100%',
+        md: '65%'
+      }
     }}>
       <Box sx={{
         color: (theme) => theme.palette.text.secondary,
@@ -57,7 +61,7 @@ export function Settings() {
             color: (theme) => theme.palette.text.secondary,
           }}
         >
-          Changes made to the settings here take effect immediately on all students. To individually toggle a student's ability to make reservations, go to the students tab.
+          Changes made to the settings here take effect immediately on all students. To individually toggle a student's ability to make reservations, <Link to='/admin/students' underline="hover">go to the students tab</Link>.
         </Typography>
         <br />
         <Typography
@@ -78,7 +82,8 @@ export function Settings() {
       flexGrow: 1
     }}>
       <StyledBox sx={{
-        // flexGrow: 1.5
+        maxHeight: '50%',
+        flexGrow: 1
       }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateTimePicker
@@ -107,10 +112,11 @@ export function Settings() {
       </StyledBox>
 
       <StyledBox sx={{
-        // flexGrow: 0.5
+        maxHeight: '50%',
+        flexGrow: 1
       }}>
         <StyledSwitchContainer>
-          <span>Allow booking?</span>
+          <span style={{ marginLeft: 8 }}>Allow booking?</span>
           <Switch
             checked={allowBook}
             onChange={async (event) => await setAllowBook(event.target.checked)}

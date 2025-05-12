@@ -64,9 +64,9 @@ export default function AccountButton() {
       }}>
         {Boolean(user) && user.email}
       </Box>
-      <MenuItem onClick={() => {
+      <MenuItem onClick={async () => {
         handleCloseProfileMenu();
-        if (user) auth.signOut();
+        if (user) await auth.signOut();
         navigate("/");
       }}>Logout</MenuItem>
     </Menu>

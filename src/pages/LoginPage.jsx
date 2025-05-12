@@ -33,6 +33,7 @@ export default function LoginPage() {
         justifyContent: "center",
         alignItems: "center",
         backgroundImage: "url(/images/login-background.svg)",
+        backgroundColor: (theme) => theme.palette.landingbg.main,
         backgroundPosition: "center",
         backgroundSize: "cover"
       }}

@@ -45,6 +45,7 @@ export const StyledTitle = styled((props) => <Typography variant="h1" {...props}
 
 export const StyledHeroBox = styled(Stack)(({ theme }) => ({
   backgroundImage: 'url("/images/banner.jpg")',
+  backgroundColor: theme.palette.landingbg.main,
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'center',

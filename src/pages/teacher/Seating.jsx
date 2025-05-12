@@ -23,6 +23,7 @@ export default function Seating() {
                   width: '100%',
                   height: '100%',
                   backgroundImage: 'url(/images/banner.jpg)',
+                  backgroundColor: (theme) => theme.palette.landingbg.main,
                   filter: 'blur(10px)',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',

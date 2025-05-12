@@ -25,6 +25,7 @@ export default function StudentPage() {
                     height: '100%',
                     // backgroundImage: 'url(/images/login-background.svg)',
                     backgroundImage: 'url(/images/banner.jpg)',
+                    backgroundColor: (theme) => theme.palette.landingbg.main,
                     filter: 'blur(10px)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',

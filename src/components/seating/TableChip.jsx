@@ -43,7 +43,7 @@ export default function TableChip({ tableId, onClick }) {
                 : theme.palette.grey[300]
             }
           >
-            <Typography variant="h6" fontSize={"1.2em"}>{tableId}</Typography>
+            <Typography variant="h6" fontSize={"1.2em"} fontFamily={"'Cal Sans', sans-serif"}>{tableId}</Typography>
           </StyledTableChipButton>
         </AnimatedContainer>
       </Badge>

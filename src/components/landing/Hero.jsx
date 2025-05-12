@@ -65,20 +65,20 @@ const Hero = forwardRef((props, ref) => {
         alignItems="center"
         flexDirection="column"
         zIndex={1}
+        flexGrow={0.5}
       >
-        
         <AnimatedContainer delay={500}>
           <StyledScrollButton variant="contained" size="large" onClick={() => navigate("/login")}>
             <Typography fontSize={'inherit'} fontWeight={'inherit'} sx={{
               display: {
                 xs: 'none',
-                md: 'inline-block',
+                sm: 'inline-block',
               }
             }}>BOOK YOUR SEAT</Typography>
             <ArrowForwardIcon fontSize='inherit' sx={{
               marginLeft: {
                 xs: 0,
-                md: 2
+                sm: 2
               }
             }} />
           </StyledScrollButton>
