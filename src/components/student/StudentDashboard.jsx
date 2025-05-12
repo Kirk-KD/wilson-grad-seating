@@ -1,7 +1,7 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import InfoIcon from '@mui/icons-material/Info';
 import TableChartIcon from '@mui/icons-material/TableChart';
-import { Alert, Box, Typography } from "@mui/material";
+import { Alert, Box, Tooltip, Typography } from "@mui/material";
 import { styled } from '@mui/system';
 import { useAuth } from "../context/AuthContext";
 import { useSeatingSelector } from "../context/SeatingSelectorContext";
@@ -64,31 +64,35 @@ export default function StudentDashboard() {
             gap: 2,
             flexWrap: 'wrap'
           }}>
-            <StyledBox sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-              {
-                student?.tableId !== null && student?.seatNumber !== null ?
-                <CheckCircleIcon sx={{ mr: 1, color: (theme) => theme.palette.success.main }}/> :
-                <TableChartIcon sx={{ mr: 1, color: (theme) => theme.palette.primary.main }}/>
-              }
-              <Typography variant="h5" sx={{
-                fontSize: '1.4em',
-                color: (theme) => theme.palette.primary.main
+            <Tooltip title="Booking status" placement='top'>
+              <StyledBox sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
               }}>
-                {Boolean(student) ? (
-                  student.tableId !== null && student.seatNumber !== null ?
-                  `Table ${student.tableId}, Seat ${student.seatNumber}` :
-                  'No reservation yet'
-                ) : 'Loading...'}
-              </Typography>
-            </StyledBox>
+                {
+                  student?.tableId !== null && student?.seatNumber !== null ?
+                  <CheckCircleIcon sx={{ mr: 1, color: (theme) => theme.palette.success.main }}/> :
+                  <TableChartIcon sx={{ mr: 1, color: (theme) => theme.palette.primary.main }}/>
+                }
+                <Typography variant="h5" sx={{
+                  fontSize: '1.4em',
+                  color: (theme) => theme.palette.primary.main
+                }}>
+                  {Boolean(student) ? (
+                    student.tableId !== null && student.seatNumber !== null ?
+                    `Table ${student.tableId}, Seat ${student.seatNumber}` :
+                    'No reservation yet'
+                  ) : 'Loading...'}
+                </Typography>
+              </StyledBox>
+            </Tooltip>
 
-            <StyledBox>
-              {settings.deadline !== undefined && <CountdownTimer deadline={settings.deadline.value.toDate()} />}
-            </StyledBox>
+            <Tooltip title="Deadline" placement='top'>
+              <StyledBox>
+                {settings.deadline !== undefined && <CountdownTimer deadline={settings.deadline.value.toDate()} />}
+              </StyledBox>
+            </Tooltip>
 
             {
               !canBook && (
@@ -151,6 +155,7 @@ export default function StudentDashboard() {
               <Typography color="textSecondary" variant="subtitle1" align="left">
                 {/* <ol style={{ margin: 1, paddingLeft: '3vw' }}> */}
                   <span>Each button is a table. Click on one to see individual seats and book or modify your reservation.</span><br />
+                  <span>You won't be able to see the occupants of a full table.</span><br />
                   <span>Your seat choice isn't final and may be moved by teachers if neccessary.</span><br />
                   <span>This display is not entirely indicative of the actual layout.</span>
                 {/* </ol> */}
