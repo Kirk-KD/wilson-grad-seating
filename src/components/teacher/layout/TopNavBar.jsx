@@ -22,15 +22,19 @@ export default function TopNavBar() {
     <AppBar position="static" sx={{
       borderBottomLeftRadius: "10px",
       borderBottomRightRadius: "10px",
+      backgroundColor: (theme) => theme.palette.background.transparent,
+      boxShadow: 0
     }}>
       <Tabs 
         value={value} 
         onChange={handleChange} 
-        indicatorColor="secondary" 
+        indicatorColor="primary" 
         allowScrollButtonsMobile
         variant="scrollable"
         scrollButtons="auto"
-        sx={{ px: { lg: 4, md: 2 } }}
+        sx={{ 
+          px: { lg: 4, md: 2 },
+        }}
       >
         {[
           ["Seating", "/admin"],

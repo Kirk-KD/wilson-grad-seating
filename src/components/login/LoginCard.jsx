@@ -13,9 +13,10 @@ export default function LoginCard() {
           xs: "100%",
           sm: "30rem"
         },
-        minHeight: {
+        minHeight: '50vh',
+        height: {
           xs: "100%",
-          sm: "40rem"
+          sm: 'fit-content'
         },
         padding: "0",
         display: "flex",

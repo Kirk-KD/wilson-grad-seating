@@ -1,4 +1,5 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import InfoIcon from '@mui/icons-material/Info';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import { Alert, Box, Typography } from "@mui/material";
 import { styled } from '@mui/system';
@@ -58,8 +59,7 @@ export default function StudentDashboard() {
               xs: 'column',
               md: 'row'
             },
-            width: 'fit-content',
-            maxWidth: '80vw',
+            width: 'max-content',
             height: 'fit-content',
             gap: 2,
             flexWrap: 'wrap'
@@ -139,14 +139,23 @@ export default function StudentDashboard() {
             />
           </StyledBox>
 
-          <StyledBox sx={{ flex: 1 }}>
-            <Typography color="textSecondary" variant="subtitle1" align="left">
-              <ol>
-                <li>Each button is a table. Click on one to see individual seats and book or modify your reservation.</li>
-                <li>Your seat choice isn't final and may be moved by teachers if neccessary.</li>
-                <li>This display is not entirely indicative of the actual layout.</li>
-              </ol>
-            </Typography>
+          <StyledBox sx={{ flex: 1, width: '100%', display: 'flex', flexDirection: 'row' }}>
+            <Box sx={{
+              color: (theme) => theme.palette.text.secondary,
+              height: '100%',
+              mr: 2
+            }}>
+              <InfoIcon sx={{ verticalAlign: 'middle' }} />
+            </Box>
+            <Box>
+              <Typography color="textSecondary" variant="subtitle1" align="left">
+                {/* <ol style={{ margin: 1, paddingLeft: '3vw' }}> */}
+                  <span>Each button is a table. Click on one to see individual seats and book or modify your reservation.</span><br />
+                  <span>Your seat choice isn't final and may be moved by teachers if neccessary.</span><br />
+                  <span>This display is not entirely indicative of the actual layout.</span>
+                {/* </ol> */}
+              </Typography>
+            </Box>
           </StyledBox>
         </Box>
       </Box>

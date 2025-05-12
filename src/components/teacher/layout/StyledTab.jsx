@@ -1,16 +1,16 @@
 import { Tab } from '@mui/material';
-import { darken, styled } from '@mui/material/styles';
-
-const textColor = (theme) => theme.palette.getContrastText(theme.palette.primary.main);
+import { styled } from '@mui/material/styles';
 
 const StyledTab = styled(Tab)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     minWidth: theme.spacing(20),
   },
-  color: darken(textColor(theme), 0.2),
+  color: (theme) => theme.palette.primary.main,
+  fontFamily: "'Raleway Variable', sans-serif", 
+  fontWeight: 500, 
   "&.Mui-selected": {
-    color: textColor(theme),
-    fontWeight: theme.typography.fontWeightMedium
+    color: (theme) => theme.palette.primary.light,
+    fontWeight: 700
   }
 }));
 

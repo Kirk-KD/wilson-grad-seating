@@ -1,4 +1,6 @@
 import { ThemeProvider } from "@emotion/react";
+import '@fontsource-variable/raleway';
+import '@fontsource/cal-sans';
 import { CssBaseline } from "@mui/material";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect } from "react";

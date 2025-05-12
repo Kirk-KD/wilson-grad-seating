@@ -1,5 +1,5 @@
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
-import { IconButton, Paper, Skeleton, Switch, Tooltip } from "@mui/material";
+import { IconButton, Skeleton, Switch, Tooltip } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from 'react-router-dom';
 import { setStudentAllowBook } from "../../../utils/operations/teacher";
@@ -59,23 +59,25 @@ export default function StudentsTable() {
     ];
 
     return (
-      <Paper sx={{ marginTop: 4 }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          getRowId={(row) => row.uid}
-          initialState={{ pagination: { page: 0, pageSize: 10 } }}
-          pageSizeOptions={[10, 25, 50, 100]}
-          slots={{ toolbar: StudentDataToolbar }}
-          showToolbar
-          checkboxSelection
-          disableRowSelectionOnClick
-          onRowSelectionModelChange={(newSelection) => {
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        getRowId={(row) => row.uid}
+        initialState={{ pagination: { page: 0, pageSize: 10 } }}
+        pageSizeOptions={[10, 25, 50, 100]}
+        slots={{ toolbar: StudentDataToolbar }}
+        showToolbar
+        checkboxSelection
+        disableRowSelectionOnClick
+        onRowSelectionModelChange={(newSelection) => {
           setSelectedUids(Array.from(newSelection.ids));
-          }}
-          sx={{ border: 0, backgroundColor: (theme) => theme.palette.background.paper }}
-        />
-      </Paper>
+        }}
+        sx={{
+          my: 4,
+          border: 0,
+          backgroundColor: (theme) => theme.palette.background.paper
+        }}
+      />
     );
   } else {
     return <Skeleton variant="rounded" width={"100%"} height={"100%"} />;

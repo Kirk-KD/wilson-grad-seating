@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { SeatingSelectorProvider } from "../../components/context/SeatingSelectorContext";
 import { StudentsProvider } from "../../components/context/StudentsContext";
 import { StudentsManagementProvider } from "../../components/context/StudentsManagementContext";
@@ -13,6 +13,22 @@ export default function Students() {
       <StudentsManagementProvider>
         <StudentsProvider>
           <Container>
+            <Box
+              sx={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundImage: 'url(/images/banner.jpg)',
+                filter: 'blur(10px)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                opacity: 0.6,
+                zIndex: -10
+              }}
+            ></Box>
             <CsvUploadDialog />
             <DeleteStudentsDialog />
             <NewStudentDialog />

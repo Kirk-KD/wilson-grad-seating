@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { SeatingSelectorProvider } from "../../components/context/SeatingSelectorContext";
 import { SettingsProvider } from "../../components/context/SettingsContext";
 import { StudentsProvider } from "../../components/context/StudentsContext";
@@ -6,7 +7,6 @@ import { TeacherSeatingEditorProvider } from "../../components/context/TeacherSe
 import AssignStudentDialog from "../../components/teacher/seating/AssignStudentDialog";
 import EditorTableDialog from "../../components/teacher/seating/EditorTableDialog";
 import SeatingEditor from "../../components/teacher/seating/SeatingEditor";
-import { Settings } from "../../components/teacher/seating/Settings";
 
 export default function Seating() {
   return (
@@ -15,10 +15,25 @@ export default function Seating() {
         <TablesProvider>
           <StudentsProvider>
             <SettingsProvider>
+              <Box
+                sx={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: 'url(/images/banner.jpg)',
+                  filter: 'blur(10px)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                  opacity: 0.6,
+                  zIndex: -10
+                }}
+              ></Box>
               <AssignStudentDialog />
               <EditorTableDialog />
               <SeatingEditor />
-              <Settings />
             </SettingsProvider>
           </StudentsProvider>
         </TablesProvider>

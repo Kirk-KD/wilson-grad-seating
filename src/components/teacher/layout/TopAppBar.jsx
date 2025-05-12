@@ -7,14 +7,25 @@ export default function TeacherTopAppBar() {
     <Box sx={{ 
       flexGrow: 1,
     }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{
+        backgroundColor: (theme) => theme.palette.background.transparent,
+        boxShadow: 1
+      }}>
         <Toolbar sx={{
           gap: 1,
           display: 'flex',
           flexDirection: 'row',
         }}>
           <Typography
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, marginLeft: 3, fontFamily: "'Raleway Variable', sans-serif" }}
+            sx={{ 
+              flexGrow: 1, 
+              display: { xs: 'none', sm: 'block' }, 
+              marginLeft: 3, 
+              color: (theme) => theme.palette.primary.dark, 
+              fontFamily: "'Raleway Variable', sans-serif", 
+              fontWeight: 600, 
+              fontSize: '1.5em' 
+            }}
             variant="h6"
             noWrap
             component="div"

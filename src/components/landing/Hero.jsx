@@ -19,7 +19,7 @@ const Hero = forwardRef((props, ref) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   return (
-    <StyledHeroBox ref={ref} {...props} gap={12}>
+    <StyledHeroBox ref={ref} {...props} gap={'5vh'}>
       <AppBar position="static" style={{ 
         background: 'transparent', 
         boxShadow: 'none'

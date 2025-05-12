@@ -6,8 +6,8 @@ const StyledFormBox = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   width: "100%",
   flexGrow: 1,
-  gap: theme.spacing(3),
-  padding: theme.spacing(5),
+  gap: theme.spacing(2),
+  padding: theme.spacing(4),
 }));
 
 export default StyledFormBox;

@@ -35,4 +35,4 @@ function CountdownTimer({ deadline }) {
   )
 }
 
-export default CountdownTimer
+export default CountdownTimer;

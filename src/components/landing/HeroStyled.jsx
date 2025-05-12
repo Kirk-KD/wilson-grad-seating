@@ -23,18 +23,23 @@ export const StyledTitle = styled((props) => <Typography variant="h1" {...props}
 })(({ theme, sx, align }) => ({
   fontFamily: "'Raleway Variable', sans-serif",
   fontWeight: 900,
-  fontSize: '10rem',
-  lineHeight: 1,
-  height: "fit-content",
+  lineHeight: 1.2,
+  height: 'fit-content',
   color: theme.palette.common.white,
   textAlign: align,
-  fontSize: 'clamp(2rem, 18vw, 15rem)',
-  [theme.breakpoints.down('sm')]: {
-    lineHeight: 1.2
-  },
-  [theme.breakpoints.down('md')]: {
+  fontSize: '28vw',
+
+  [theme.breakpoints.up('sm')]: {
     fontSize: '30vw'
   },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '8rem'
+  },
+  [theme.breakpoints.up('lg')]: {
+    fontSize: '10rem',
+    lineHeight: 1
+  },
+
   ...sx,
 }));
 
