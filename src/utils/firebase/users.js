@@ -1,5 +1,6 @@
 import { collection, doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from 'firebase/functions';
+import ListenerManager from '../ListenerManager.js';
 import { app, auth, db } from './firebase.js';
 
 const functions = getFunctions(app, "us-central1");
@@ -60,11 +61,13 @@ export function adminSubscribeToStudents(callback) {
     }
   );
 
-  return () => {
+  const unsub = () => {
     unsubUsers();
     unsubInfos();
     unsubChoices();
   };
+  ListenerManager.add(unsub);
+  return unsub;
 }
 
 export function studentSubscribeToStudents(callback) {
@@ -109,10 +112,12 @@ export function studentSubscribeToStudents(callback) {
     }
   );
 
-  return () => {
+  const unsub = () => {
     unsubInfos();
     unsubChoices();
   };
+  ListenerManager.add(unsub);
+  return unsub;
 }
 
 export async function registerStudent({ fname, lname, email, oen }) {

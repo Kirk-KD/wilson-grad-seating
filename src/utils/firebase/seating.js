@@ -5,6 +5,7 @@ import {
   onSnapshot,
   updateDoc
 } from 'firebase/firestore';
+import ListenerManager from '../ListenerManager.js';
 import { db } from "./firebase.js";
 
 const numTables = 54;
@@ -13,23 +14,27 @@ const validTableIds = Array.from({ length: numTables }, (_, i) => (i + 1).toStri
 const validSeatNumbers = Array.from({ length: numSeats }, (_, i) => (i + 1).toString());
 
 export function subscribeToTables(callback) {
-  return onSnapshot(collection(db, 'tables'), snapshot => {
+  const unsub = onSnapshot(collection(db, 'tables'), snapshot => {
     const result = {};
     snapshot.docs.forEach(docSnap => {
       result[docSnap.id] = docSnap.data();
     });
     callback(result);
   });
+  ListenerManager.add(unsub);
+  return unsub;
 }
 
 export function subscribeToSettings(callback) {
-  return onSnapshot(collection(db, 'settings'), snapshot => {
+  const unsub = onSnapshot(collection(db, 'settings'), snapshot => {
     const result = {};
     snapshot.docs.forEach(docSnap => {
       result[docSnap.id] = docSnap.data();
     });
     callback(result);
   });
+  ListenerManager.add(unsub);
+  return unsub;
 }
 
 export async function assignSeat({ tableId, seatNumber, uid }) {

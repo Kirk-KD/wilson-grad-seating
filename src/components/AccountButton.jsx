@@ -5,6 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../utils/firebase/firebase';
+import ListenerManager from '../utils/ListenerManager.js';
 
 export default function AccountButton() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -66,7 +67,10 @@ export default function AccountButton() {
       </Box>
       <MenuItem onClick={async () => {
         handleCloseProfileMenu();
-        if (user) await auth.signOut();
+        if (user) {
+          ListenerManager.clearAll();
+          await auth.signOut();
+        }
         navigate("/");
       }}>Logout</MenuItem>
     </Menu>
